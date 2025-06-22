@@ -272,12 +272,6 @@
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12" data-translate="tradeTitle">Global Trade & Supply Chain Facilitation</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- MSME Trade Enablement -->
-                <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2" data-translate="msmeTradeEnablement">MSME Trade Enablement</h3>
-                    <p class="text-gray-600 mb-4" data-translate="msmeTradeDesc">Access digital tools, market linkages, and capacity building.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="getStarted" onclick="showModal('msme')">Get Started</button>
-                </div>
                 <!-- Supply Chain Finance -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-xl font-semibold mb-2" data-translate="supplyChainFinance">Supply Chain Finance</h3>
@@ -290,12 +284,6 @@
                     <p class="text-gray-600 mb-4" data-translate="aiCustomsDesc">Automate clearance and RoO for AfCFTA.</p>
                     <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="manageCustoms" onclick="showModal('customs')">Manage Customs</button>
                 </div>
-                <!-- Smart Logistics -->
-                <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2" data-translate="logisticsTitle">Smart Logistics</h3>
-                    <p class="text-gray-600 mb-4" data-translate="">IoT-enabled global tracking and optimization.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('logistics')">Track Shipment</button>
-                </div>
                 <!-- Smart Trade Contracts -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
                     <h3 class="text-xl font-semibold mb-2" data-translate="smartContracts">Smart Trade Contracts</h3>
@@ -307,6 +295,27 @@
                     <h3 class="text-xl font-semibold mb-2" data-translate="crossBorderTax">Cross-Border Tax</h3>
                     <p class="text-gray-600 mb-4" data-translate="crossBorderDesc">Auto-calculate intra-African taxes.</p>
                     <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="manageTaxes" onclick="showModal('tax')">Manage Taxes</button>
+                </div>
+
+                <!-- Investment/Capital Market -->
+                <div class="card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-2" data-translate="investmentTitle">Investment & Capital Market</h3>
+                    <p class="text-gray-600 mb-4" data-translate="investmentDesc">Access pan-African capital markets and tokenized asset investments.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="investNow" onclick="showModal('investment')">Invest Now</button>
+                </div>
+
+                <!-- Insurance -->
+                <div class="card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-2" data-translate="insuranceTitle">Smart Trade Insurance</h3>
+                    <p class="text-gray-600 mb-4" data-translate="insuranceDesc">Automated insurance for cross-border shipments and payments.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="getCoverage" onclick="showModal('insurance')">Get Coverage</button>
+                </div>
+
+                <!-- Portable ID -->
+                <div class="card bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-2" data-translate="portableIdTitle">Portable Digital ID</h3>
+                    <p class="text-gray-600 mb-4" data-translate="portableIdDesc">Cross-border identity verification for seamless trade.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="verifyId" onclick="showModal('portableid')">Verify ID</button>
                 </div>
             </div>
         </div>
@@ -516,7 +525,18 @@ const translations = {
         footerTagline: "Bridging Africa's resources to the global economy with open-source innovation.",
         quickLinks: "Quick Links",
         contactUs: "Contact Us",
-        copyright: "© 2025 PFTISS. All rights reserved."
+        copyright: "© 2025 PFTISS. All rights reserved.",
+
+        // Add these to each language in your translations object
+        investmentTitle: "Investment & Capital Market",
+        investmentDesc: "Access pan-African capital markets and tokenized asset investments.",
+        investNow: "Invest Now",
+        insuranceTitle: "Smart Trade Insurance",
+        insuranceDesc: "Automated insurance for cross-border shipments and payments.",
+        getCoverage: "Get Coverage",
+        portableIdTitle: "Portable Digital ID",
+        portableIdDesc: "Cross-border identity verification for seamless trade.",
+        verifyId: "Verify ID"
     },
     fr: {
         // Navigation
@@ -1029,9 +1049,9 @@ translations.sw.reserveComposition = "Muundo wa Akiba";
         }
 
         // Then in your showModal function:
-const modalTitle = document.getElementById('modalTitle');
-const lang = document.getElementById('language-selector').value;
-modalTitle.textContent = translations[lang][`${type}Title`] || modalContent.title;  
+        const modalTitle = document.getElementById('modalTitle');
+        const lang = document.getElementById('language-selector').value;
+        modalTitle.textContent = translations[lang][`${type}Title`] || modalContent.title;  
 
 
         // Setup event listeners
@@ -1420,6 +1440,113 @@ modalTitle.textContent = translations[lang][`${type}Title`] || modalContent.titl
                                 <input type="file" class="w-full border border-gray-300 rounded px-3 py-2">
                             </div>
                             <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockSupplyChainFinance()">Apply Now</button>
+                        </div>
+                    `
+                },
+                investment: {
+                    title: 'Investment & Capital Market',
+                    description: 'Access pan-African capital markets and tokenized asset investments.',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">Investment Type</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Tokenized Commodities</option>
+                                    <option>Government Bonds</option>
+                                    <option>Corporate Bonds</option>
+                                    <option>Equity Crowdfunding</option>
+                                    <option>Infrastructure Projects</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Amount to Invest</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Currency</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>PFTISS Stablecoin</option>
+                                    <option>Tokenized USD</option>
+                                    <option>eNaira</option>
+                                    <option>Gold Tokens</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Term (Months)</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="12">
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockInvestment()">Submit Investment</button>
+                        </div>
+                    `
+                },
+                insurance: {
+                    title: 'Smart Trade Insurance',
+                    description: 'Automated insurance for cross-border shipments and payments.',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">Insurance Type</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Cargo Insurance</option>
+                                    <option>Payment Guarantee</option>
+                                    <option>Currency Fluctuation</option>
+                                    <option>Political Risk</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Coverage Amount</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Shipment Value</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Route</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Nigeria to Ghana</option>
+                                    <option>South Africa to Kenya</option>
+                                    <option>Intra-regional</option>
+                                    <option>Global</option>
+                                </select>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockInsurance()">Get Quote</button>
+                        </div>
+                    `
+                },
+                portableid: {
+                    title: 'Portable Digital ID',
+                    description: 'Cross-border identity verification for seamless trade.',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">Current Verification Status</label>
+                                <div class="p-3 bg-green-100 text-green-800 rounded">
+                                    <i class="fas fa-check-circle mr-2"></i>
+                                    <span>Verified in Nigeria (Level 2)</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Extend Verification To</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Ghana</option>
+                                    <option>Kenya</option>
+                                    <option>South Africa</option>
+                                    <option>All AfCFTA Countries</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Verification Level</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Level 1 (Basic)</option>
+                                    <option>Level 2 (Standard)</option>
+                                    <option>Level 3 (Enhanced)</option>
+                                </select>
+                            </div>
+                            <div class="p-3 bg-blue-50 text-blue-800 rounded">
+                                <p class="text-sm">Portable ID allows you to use your existing KYC across borders without re-verification.</p>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockPortableID()">Extend Verification</button>
                         </div>
                     `
                 },
@@ -1980,6 +2107,21 @@ function showLanguageNotification(message) {
 
         function mockSetupOffline() {
             alert('Offline access configured! In a real system, this would enable USSD/SMS transactions.');
+            closeModal();
+        }
+
+        function mockInvestment() {
+            alert('Investment submitted! In a real system, this would process your capital market investment.');
+            closeModal();
+        }
+
+        function mockInsurance() {
+            alert('Insurance quote generated! In a real system, this would provide coverage details and pricing.');
+            closeModal();
+        }
+
+        function mockPortableID() {
+            alert('Portable ID extended! In a real system, this would enable cross-border identity verification.');
             closeModal();
         }
 
