@@ -110,17 +110,20 @@
     <!-- Navigation Bar -->
 <nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="text-2xl font-bold text-blue-600">PFTISS</div>
+      <div class="w-40 h-auto">
+        <img src="logo.png" class="w-full h-auto" alt="PFTISS Logo" />
+      </div>
+
       <div class="block md:hidden">
         <button id="mobile-menu-button" class="text-gray-600 text-2xl focus:outline-none">
           <i class="fas fa-bars"></i>
         </button>
       </div>
       <div id="mobile-menu" class="mobile-menu hidden absolute top-16 left-0 w-full bg-white shadow-md p-4 z-50">
-        <a href="#home" class="block text-gray-600 py-2 hover:text-blue-600">Home</a>
-        <a href="#dashboard" class="block text-gray-600 py-2 hover:text-blue-600">Dashboard</a>
-        <a href="#trade" class="block text-gray-600 py-2 hover:text-blue-600">Trade</a>
-        <a href="#compliance" class="block text-gray-600 py-2 hover:text-blue-600">Compliance</a>
+        <a href="#home" class="block text-gray-600 py-2 hover:text-blue-600" data-translate="home">Home</a>
+        <a href="#dashboard" class="block text-gray-600 py-2 hover:text-blue-600" data-translate="dashboard">Dashboard</a>
+        <a href="#trade" class="block text-gray-600 py-2 hover:text-blue-600" data-translate="trade">Trade</a>
+        <a href="#compliance" class="block text-gray-600 py-2 hover:text-blue-600"  data-translate="compliance">Compliance</a>
         <select id="mobile-language-selector" class="w-full border border-gray-300 rounded px-2 py-1 mt-2 text-gray-600" onchange="changeLanguage()">
           <option value="en">English</option>
           <option value="fr">Français</option>
@@ -146,9 +149,9 @@
     <!-- Hero Section -->
     <section id="home" class="hero-section py-20 text-center">
         <div class="container mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">PFTISS: Transforming Africa's Economic Future</h1>
-            <p class="text-lg md:text-xl mb-6">An open-source, commodity-backed platform driving intra-African trade, financial inclusion, and sustainable prosperity globally.</p>
-            <a href="#dashboard" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100">Explore Now</a>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4" data-translate="headertitlelag">PFTISS: Transforming Africa's Economic Future</h1>
+            <p class="text-lg md:text-xl mb-6" data-translate="headertitlelagdescription">An open-source, commodity-backed platform driving intra-African trade, financial inclusion, and sustainable prosperity globally.</p>
+            <a href="#dashboard" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100" data-translate="explorenow">Explore Now</a>
         </div>
     </section>
 
@@ -198,12 +201,12 @@
 </div>
             <!-- Main Content -->
             <div class="flex-1 md:ml-4">
-                <h2 class="text-3xl font-bold mb-8">PFTISS Global Dashboard</h2>
+                <h2 class="text-3xl font-bold mb-8" data-translate="globalDashboard">PFTISS Global Dashboard</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Wallet -->
                     <div id="wallet" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Multi-Currency Wallet</h3>
-                        <p class="text-gray-600">Balances (Global Access):</p>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="walletTitle">Multi-Currency Wallet</h3>
+                        <p class="text-gray-600" data-translate="walletDesc">Balances (Global Access):</p>
                         <ul class="mt-2" id="wallet-balances">
                             <!-- Wallet balances will be populated by JavaScript -->
                         </ul>
@@ -211,53 +214,53 @@
                     </div>
                     <!-- Global Payments -->
                     <div id="payments" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Multi-Payment Rail</h3>
-                        <p class="text-gray-600">Pay with fiat, CBDC, stablecoin, crypto, tokenized assets, or commodities.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('payment')">Make Payment</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="paymentsTitle">Multi-Payment Rail</h3>
+                        <p class="text-gray-600" data-translate="paymentsDesc">Pay with fiat, CBDC, stablecoin, crypto, tokenized assets, or commodities.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="makePayment" onclick="showModal('payment')">Make Payment</button>
                     </div>
                     <!-- Government Services -->
                     <div id="govservices" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Government Services</h3>
-                        <p class="text-gray-600">Pay taxes, licenses, permits, and utilities in Nigeria and AfCFTA countries.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('govservices')">Pay Now</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="govServicesTitle">Government Services</h3>
+                        <p class="text-gray-600" data-translate="govServicesDesc">Pay taxes, licenses, permits, and utilities in Nigeria and AfCFTA countries.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="payNow" onclick="showModal('govservices')">Pay Now</button>
                     </div>
                     <!-- Recent Transactions -->
                     <div class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Recent Transactions</h3>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="recentTransactions">Recent Transactions</h3>
                         <div id="recent-transactions">
                             <!-- Transactions will be populated by JavaScript -->
                         </div>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('transactions')">View All</button>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="viewAll" onclick="showModal('transactions')">View All</button>
                     </div>
                     <!-- DeFi Hub -->
                     <div id="defi" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">DeFi Hub for Inclusion</h3>
-                        <p class="text-gray-600">Micro-lending, women/youth programs, and gamified savings.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('defi')">Join DeFi</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="defiTitle">DeFi Hub for Inclusion</h3>
+                        <p class="text-gray-600" data-translate="defiDesc">Micro-lending, women/youth programs, and gamified savings.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="joinDeFi" onclick="showModal('defi')">Join DeFi</button>
                     </div>
                     <!-- MSME Enablement -->
                     <div id="trade" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">MSME Trade & Enablement</h3>
-                        <p class="text-gray-600">Access financing, trade tools, and capacity building.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('msme')">Get Started</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="msmeTitle">MSME Trade & Enablement</h3>
+                        <p class="text-gray-600" data-translate="msmeDesc">Access financing, trade tools, and capacity building.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="getStarted" onclick="showModal('msme')">Get Started</button>
                     </div>
                     <!-- Logistics Tracking -->
                     <div id="logistics" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Smart Logistics</h3>
-                        <p class="text-gray-600">Track global shipments with IoT and AI.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('logistics')">Track Now</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="logisticsTitle">Smart Logistics</h3>
+                        <p class="text-gray-600" data-translate="logisticsDesc">Track global shipments with IoT and AI.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="trackNow" onclick="showModal('logistics')">Track Now</button>
                     </div>
                     <!-- Programmable Monetary Policy -->
                     <div id="monetary" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Programmable Monetary Policy</h3>
-                        <p class="text-gray-600">Manage inflation controls and MPR via smart contracts.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary')">Configure Policy</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="monetaryTitle">Programmable Monetary Policy</h3>
+                        <p class="text-gray-600" data-translate="monetaryDesc">Manage inflation controls and MPR via smart contracts.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="configurePolicy" onclick="showModal('monetary')">Configure Policy</button>
                     </div>
                     <!-- Pension Module -->
                     <div id="pension" class="card bg-white rounded-lg shadow-md p-6">
-                        <h3 class="text-xl font-semibold mb-2">Pension Module</h3>
-                        <p class="text-gray-600">Micro-pensions and DeFi retirement plans.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('pension')">Enroll Now</button>
+                        <h3 class="text-xl font-semibold mb-2" data-translate="pensionTitle">Pension Module</h3>
+                        <p class="text-gray-600" data-translate="pensionDesc">Micro-pensions and DeFi retirement plans.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="enrollNow" onclick="showModal('pension')">Enroll Now</button>
                     </div>
                 </div>
             </div>
@@ -267,43 +270,43 @@
     <!-- Trade & Supply Chain Facilitation -->
     <section id="trade" class="py-16 bg-gray-200">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Global Trade & Supply Chain Facilitation</h2>
+            <h2 class="text-3xl font-bold text-center mb-12" data-translate="tradeTitle">Global Trade & Supply Chain Facilitation</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- MSME Trade Enablement -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">MSME Trade Enablement</h3>
-                    <p class="text-gray-600 mb-4">Access digital tools, market linkages, and capacity building.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('msme')">Get Started</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="msmeTradeEnablement">MSME Trade Enablement</h3>
+                    <p class="text-gray-600 mb-4" data-translate="msmeTradeDesc">Access digital tools, market linkages, and capacity building.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="getStarted" onclick="showModal('msme')">Get Started</button>
                 </div>
                 <!-- Supply Chain Finance -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Supply Chain Finance</h3>
-                    <p class="text-gray-600 mb-4">Fund against global purchase orders.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('supply')">Apply for Finance</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="supplyChainFinance">Supply Chain Finance</h3>
+                    <p class="text-gray-600 mb-4" data-translate="supplyChainDesc">Fund against global purchase orders.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="applyForFinance" onclick="showModal('supply')">Apply for Finance</button>
                 </div>
                 <!-- Customs Management -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">AI Customs Management</h3>
-                    <p class="text-gray-600 mb-4">Automate clearance and RoO for AfCFTA.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('customs')">Manage Customs</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="aiCustoms">AI Customs Management</h3>
+                    <p class="text-gray-600 mb-4" data-translate="aiCustomsDesc">Automate clearance and RoO for AfCFTA.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="manageCustoms" onclick="showModal('customs')">Manage Customs</button>
                 </div>
                 <!-- Smart Logistics -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Smart Logistics</h3>
-                    <p class="text-gray-600 mb-4">IoT-enabled global tracking and optimization.</p>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="logisticsTitle">Smart Logistics</h3>
+                    <p class="text-gray-600 mb-4" data-translate="">IoT-enabled global tracking and optimization.</p>
                     <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('logistics')">Track Shipment</button>
                 </div>
                 <!-- Smart Trade Contracts -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Smart Trade Contracts</h3>
-                    <p class="text-gray-600 mb-4">Automate global procurement and escrow.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('contracts')">Create Contract</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="smartContracts">Smart Trade Contracts</h3>
+                    <p class="text-gray-600 mb-4" data-translate="smartContractsDesc">Automate global procurement and escrow.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="createContract" onclick="showModal('contracts')">Create Contract</button>
                 </div>
                 <!-- Cross-Border Tax -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Cross-Border Tax</h3>
-                    <p class="text-gray-600 mb-4">Auto-calculate intra-African taxes.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('tax')">Manage Taxes</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="crossBorderTax">Cross-Border Tax</h3>
+                    <p class="text-gray-600 mb-4" data-translate="crossBorderDesc">Auto-calculate intra-African taxes.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="manageTaxes" onclick="showModal('tax')">Manage Taxes</button>
                 </div>
             </div>
         </div>
@@ -312,25 +315,25 @@
     <!-- Compliance & Governance -->
     <section id="compliance" class="py-16">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Compliance & Governance</h2>
+            <h2 class="text-3xl font-bold text-center mb-12" data-translate="complianceTitle">Compliance & Governance</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- KYC/AML -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">KYC/AML Verification</h3>
-                    <p class="text-gray-600 mb-4">Verify identities globally with portable KYC.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('kyc')">Start Verification</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="kycTitle">KYC/AML Verification</h3>
+                    <p class="text-gray-600 mb-4" data-translate="kycDesc">Verify identities globally with portable KYC.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="startVerification" onclick="showModal('kyc')">Start Verification</button>
                 </div>
                 <!-- Real-Time Reporting -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Real-Time Reporting</h3>
-                    <p class="text-gray-600 mb-4">Dashboards for global regulators.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('reporting')">View Reports</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="reportingTitle">Real-Time Reporting</h3>
+                    <p class="text-gray-600 mb-4" data-translate="reportingDesc">Dashboards for global regulators.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="viewReports" onclick="showModal('reporting')">View Reports</button>
                 </div>
                 <!-- DAO Governance -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">DAO Governance</h3>
-                    <p class="text-gray-600 mb-4">Vote on protocol upgrades globally.</p>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('dao')">Participate</button>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="daoTitle">DAO Governance</h3>
+                    <p class="text-gray-600 mb-4" data-translate="daoDesc">Vote on protocol upgrades globally.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="participate" onclick="showModal('dao')">Participate</button>
                 </div>
             </div>
         </div>
@@ -339,25 +342,25 @@
     <!-- Commodity Reserves -->
     <section id="reserves" class="py-16 bg-gray-200">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Commodity Reserve Structure</h2>
+            <h2 class="text-3xl font-bold text-center mb-12" data-translate="reservesTitle">Commodity Reserve Structure</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Reserve Composition -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Reserve Composition</h3>
-                    <p class="text-gray-600 mb-4">Dynamic basket of African commodities backing payments.</p>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="reserveComposition">Reserve Composition</h3>
+                    <p class="text-gray-600 mb-4" data-translate="reserveDesc">Dynamic basket of African commodities backing payments.</p>
                     <div class="chart-container" style="position: relative; height:300px;">
                         <canvas id="reserveChart"></canvas>
                     </div>
-                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('reserves')">View Details</button>
+                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="viewDetails" onclick="showModal('reserves')">View Details</button>
                 </div>
                 <!-- Reserve Storage -->
                 <div class="card bg-white rounded-lg shadow-md p-6">
-                    <h3 class="text-xl font-semibold mb-2">Reserve Storage Framework</h3>
-                    <p class="text-gray-600 mb-4">Secure global custodial framework for commodities.</p>
+                    <h3 class="text-xl font-semibold mb-2" data-translate="storageTitle">Reserve Storage Framework</h3>
+                    <p class="text-gray-600 mb-4" data-translate="storageDesc">Secure global custodial framework for commodities.</p>
                     <div id="storageLocations" style="max-height: 300px; overflow-y: auto;">
                         <!-- Storage locations will be populated by JavaScript -->
                     </div>
-                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('storage')">View Storage</button>
+                    <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="viewStorage" onclick="showModal('storage')">View Storage</button>
                 </div>
             </div>
         </div>
@@ -368,25 +371,29 @@
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 class="text-xl font-semibold">PFTISS</h3>
-                    <p class="mt-2">Bridging Africa's resources to the global economy with open-source innovation.</p>
+                    <h3 class="text-xl font-semibold">
+                        <div class="w-40 h-auto">
+                            <img src="logo-footer.png" class="w-full h-auto" alt="PFTISS Logo" />
+                        </div>
+                    </h3>
+                    <p class="mt-2" data-translate="footerTagline">Bridging Africa's resources to the global economy with open-source innovation.</p>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold">Quick Links</h3>
+                    <h3 class="text-xl font-semibold" data-translate="quickLinks">Quick Links</h3>
                     <ul class="mt-2 space-y-2">
-                        <li><a href="#home" class="hover:text-blue-400">Home</a></li>
-                        <li><a href="#dashboard" class="hover:text-blue-400">Dashboard</a></li>
-                        <li><a href="#trade" class="hover:text-blue-400">Trade</a></li>
-                        <li><a href="#govservices" class="hover:text-blue-400">Government Services</a></li>
+                        <li><a href="#home" class="hover:text-blue-400" data-translate="home">Home</a></li>
+                        <li><a href="#dashboard" class="hover:text-blue-400" data-translate="dashboard">Dashboard</a></li>
+                        <li><a href="#trade" class="hover:text-blue-400" data-translate="trade">Trade</a></li>
+                        <li><a href="#govservices" class="hover:text-blue-400" data-translate="compliance">Government Services</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold">Contact Us</h3>
+                    <h3 class="text-xl font-semibold" data-translate="contactUs">Contact Us</h3>
                     <p class="mt-2">Email: support@pftiss.africa</p>
                     <p>Phone: +234 123 456 7890</p>
                 </div>
             </div>
-            <p class="text-center mt-8">© 2025 PFTISS. All rights reserved.</p>
+            <p class="text-center mt-8" data-translate="copyright">© 2025 PFTISS. All rights reserved.</p>
         </div>
     </footer>
 
@@ -403,10 +410,476 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+const translations = {
+    en: {
+        // Navigation
+        home: "Home",
+        dashboard: "Dashboard",
+        trade: "Trade",
+        compliance: "Compliance",
+        
+        // Header
+        headertitlelag: "PFTISS: Transforming Africa's Economic Future",
+        headertitlelagdescription: "An open-source, commodity-backed platform driving intra-African trade, financial inclusion, and sustainable prosperity globally.",
+        explorenow: "Explore Now",
+        
+        // Sidebar
+        wallet: "Wallet",
+        payments: "Payments",
+        govServices: "Government Services",
+        msmeEnablement: "MSME Enablement",
+        defiHub: "DeFi Hub",
+        logistics: "Logistics",
+        reserves: "Reserves",
+        pension: "Pension",
+        
+        // Dashboard Cards
+        globalDashboard: "PFTISS Global Dashboard",
+        walletTitle: "Multi-Currency Wallet",
+        walletDesc: "Balances (Global Access):",
+        pftStablecoin: "PFTISS Stablecoin",
+        eNaira: "eNaira",
+        goldToken: "Gold Token",
+        cocoaToken: "Cocoa Token",
+        tokenizedUSD: "Tokenized USD",
+        carbonCredits: "Carbon Credits",
+        manageWallet: "Manage Wallet",
+        paymentsTitle: "Multi-Payment Rail",
+        paymentsDesc: "Pay with fiat, CBDC, stablecoin, crypto, tokenized assets, or commodities.",
+        makePayment: "Make Payment",
+        govServicesTitle: "Government Services",
+        govServicesDesc: "Pay taxes, licenses, permits, and utilities in Nigeria and AfCFTA countries.",
+        payNow: "Pay Now",
+        recentTransactions: "Recent Transactions",
+        viewAll: "View All",
+        defiTitle: "DeFi Hub for Inclusion",
+        defiDesc: "Micro-lending, women/youth programs, and gamified savings.",
+        joinDeFi: "Join DeFi",
+        msmeTitle: "MSME Trade & Enablement",
+        msmeDesc: "Access financing, trade tools, and capacity building.",
+        getStarted: "Get Started",
+        logisticsTitle: "Smart Logistics",
+        logisticsDesc: "Track global shipments with IoT and AI.",
+        trackNow: "Track Now",
+        monetaryTitle: "Programmable Monetary Policy",
+        monetaryDesc: "Manage inflation controls and MPR via smart contracts.",
+        configurePolicy: "Configure Policy",
+        pensionTitle: "Pension Module",
+        pensionDesc: "Micro-pensions and DeFi retirement plans.",
+        enrollNow: "Enroll Now",
+        
+        // Trade Section
+        tradeTitle: "Global Trade & Supply Chain Facilitation",
+        msmeTradeEnablement: "MSME Trade Enablement",
+        msmeTradeDesc: "Access digital tools, market linkages, and capacity building.",
+        supplyChainFinance: "Supply Chain Finance",
+        supplyChainDesc: "Fund against global purchase orders.",
+        applyForFinance: "Apply for Finance",
+        aiCustoms: "AI Customs Management",
+        aiCustomsDesc: "Automate clearance and RoO for AfCFTA.",
+        manageCustoms: "Manage Customs",
+        smartContracts: "Smart Trade Contracts",
+        smartContractsDesc: "Automate global procurement and escrow.",
+        createContract: "Create Contract",
+        crossBorderTax: "Cross-Border Tax",
+        crossBorderDesc: "Auto-calculate intra-African taxes.",
+        manageTaxes: "Manage Taxes",
+        
+        // Compliance Section
+        complianceTitle: "Compliance & Governance",
+        kycTitle: "KYC/AML Verification",
+        kycDesc: "Verify identities globally with portable KYC.",
+        startVerification: "Start Verification",
+        reportingTitle: "Real-Time Reporting",
+        reportingDesc: "Dashboards for global regulators.",
+        viewReports: "View Reports",
+        daoTitle: "DAO Governance",
+        daoDesc: "Vote on protocol upgrades globally.",
+        participate: "Participate",
+        
+        // Reserves Section
+        reservesTitle: "Commodity Reserve Structure",
+        reserveComposition: "Reserve Composition",
+        reserveDesc: "Dynamic basket of African commodities backing payments.",
+        viewDetails: "View Details",
+        storageTitle: "Reserve Storage Framework",
+        storageDesc: "Secure global custodial framework for commodities.",
+        goldStorage: "Gold: Brinks Vaults (Multiple)",
+        oilStorage: "Oil: Licensed Depots (Nigeria, Angola)",
+        cocoaStorage: "Cocoa: AFEX Warehouses (Nigeria, Ghana)",
+        copperStorage: "Copper: DRC Depots (DR Congo)",
+        viewStorage: "View Storage",
+        
+        // Footer
+        footerTagline: "Bridging Africa's resources to the global economy with open-source innovation.",
+        quickLinks: "Quick Links",
+        contactUs: "Contact Us",
+        copyright: "© 2025 PFTISS. All rights reserved."
+    },
+    fr: {
+        // Navigation
+        home: "Accueil",
+        dashboard: "Tableau de bord",
+        trade: "Commerce",
+        compliance: "Conformité",
+        
+        // Header
+        headertitlelag: "PFTISS: Transformer l'avenir économique de l'Afrique",
+        headertitlelagdescription: "Une plateforme open source, soutenue par des matières premières, qui favorise le commerce intra-africain, l'inclusion financière et la prospérité durable à l'échelle mondiale.",
+        explorenow: "Explorez maintenant",
+        
+        // Sidebar
+        wallet: "Portefeuille",
+        payments: "Paiements",
+        govServices: "Services gouvernementaux",
+        msmeEnablement: "Activation PME",
+        defiHub: "Hub DeFi",
+        logistics: "Logistique",
+        reserves: "Réserves",
+        pension: "Pension",
+        
+        // Dashboard Cards
+        globalDashboard: "Tableau de bord global PFTISS",
+        walletTitle: "Portefeuille multi-devises",
+        walletDesc: "Soldes (accès global) :",
+        pftStablecoin: "Stablecoin PFTISS",
+        eNaira: "eNaira",
+        goldToken: "Jeton Or",
+        cocoaToken: "Jeton Cacao",
+        tokenizedUSD: "USD Tokenisé",
+        carbonCredits: "Crédits Carbone",
+        manageWallet: "Gérer le portefeuille",
+        paymentsTitle: "Système de paiement multiple",
+        paymentsDesc: "Payez avec fiat, CBDC, stablecoin, crypto, actifs tokenisés ou matières premières.",
+        makePayment: "Effectuer un paiement",
+        govServicesTitle: "Services gouvernementaux",
+        govServicesDesc: "Payez les taxes, licences, permis et services publics au Nigeria et dans les pays de la ZLECAf.",
+        payNow: "Payer maintenant",
+        recentTransactions: "Transactions récentes",
+        viewAll: "Voir tout",
+        defiTitle: "Hub DeFi pour l'inclusion",
+        defiDesc: "Microcrédit, programmes pour femmes/jeunes et épargne ludique.",
+        joinDeFi: "Rejoindre DeFi",
+        msmeTitle: "Commerce et autonomisation des PME",
+        msmeDesc: "Accès au financement, outils commerciaux et renforcement des capacités.",
+        getStarted: "Commencer",
+        logisticsTitle: "Logistique intelligente",
+        logisticsDesc: "Suivez les expéditions mondiales avec IoT et IA.",
+        trackNow: "Suivre maintenant",
+        monetaryTitle: "Politique monétaire programmable",
+        monetaryDesc: "Gérez les contrôles de l'inflation et le TMP via des contrats intelligents.",
+        configurePolicy: "Configurer la politique",
+        pensionTitle: "Module de retraite",
+        pensionDesc: "Micro-retraites et plans de retraite DeFi.",
+        enrollNow: "S'inscrire maintenant",
+        
+        // Trade Section
+        tradeTitle: "Facilitation du commerce mondial et de la chaîne d'approvisionnement",
+        msmeTradeEnablement: "Activation commerciale des PME",
+        msmeTradeDesc: "Accès aux outils numériques, liens commerciaux et renforcement des capacités.",
+        supplyChainFinance: "Financement de la chaîne d'approvisionnement",
+        supplyChainDesc: "Financement contre les commandes d'achat mondiales.",
+        applyForFinance: "Demander un financement",
+        aiCustoms: "Gestion douanière par IA",
+        aiCustomsDesc: "Automatisez le dédouanement et les règles d'origine pour la ZLECAf.",
+        manageCustoms: "Gérer les douanes",
+        smartContracts: "Contrats commerciaux intelligents",
+        smartContractsDesc: "Automatisez les achats mondiaux et le séquestre.",
+        createContract: "Créer un contrat",
+        crossBorderTax: "Taxe transfrontalière",
+        crossBorderDesc: "Calcul automatique des taxes intra-africaines.",
+        manageTaxes: "Gérer les taxes",
+        
+        // Compliance Section
+        complianceTitle: "Conformité et gouvernance",
+        kycTitle: "Vérification KYC/AML",
+        kycDesc: "Vérifiez les identités à l'échelle mondiale avec KYC portable.",
+        startVerification: "Commencer la vérification",
+        reportingTitle: "Reporting en temps réel",
+        reportingDesc: "Tableaux de bord pour les régulateurs mondiaux.",
+        viewReports: "Voir les rapports",
+        daoTitle: "Gouvernance DAO",
+        daoDesc: "Votez sur les mises à niveau du protocole à l'échelle mondiale.",
+        participate: "Participer",
+        
+        // Reserves Section
+        reservesTitle: "Structure des réserves de matières premières",
+        reserveComposition: "Composition des réserves",
+        reserveDesc: "Panier dynamique de matières premières africaines soutenant les paiements.",
+        viewDetails: "Voir les détails",
+        storageTitle: "Cadre de stockage des réserves",
+        storageDesc: "Cadre de garde sécurisé à l'échelle mondiale pour les matières premières.",
+        goldStorage: "Or : Brinks Vaults (Multiple)",
+        oilStorage: "Pétrole : Dépôts agréés (Nigeria, Angola)",
+        cocoaStorage: "Cacao : Entrepôts AFEX (Nigeria, Ghana)",
+        copperStorage: "Cuivre : Dépôts RDC (République Démocratique du Congo)",
+        viewStorage: "Voir le stockage",
+        
+        // Footer
+        footerTagline: "Relier les ressources africaines à l'économie mondiale grâce à l'innovation open source.",
+        quickLinks: "Liens rapides",
+        contactUs: "Contactez-nous",
+        copyright: "© 2025 PFTISS. Tous droits réservés."
+    },
+    ar: {
+        // Navigation
+        home: "الصفحة الرئيسية",
+        dashboard: "لوحة التحكم",
+        trade: "تجارة",
+        compliance: "الامتثال",
+        
+        // Header
+        headertitlelag: "PFTISS: تحويل المستقبل الاقتصادي لأفريقيا",
+        headertitlelagdescription: "منصة مفتوحة المصدر مدعومة بالسلع الأساسية تدفع التجارة داخل أفريقيا، والشمول المالي، والازدهار المستدام عالميًا.",
+        explorenow: "استكشف الآن",
+        
+        // Sidebar
+        wallet: "محفظة",
+        payments: "المدفوعات",
+        govServices: "الخدمات الحكومية",
+        msmeEnablement: "تمكين المشاريع الصغيرة والمتوسطة",
+        defiHub: "مركز التمويل اللامركزي",
+        logistics: "الخدمات اللوجستية",
+        reserves: "احتياطيات",
+        pension: "معاش",
+        
+        // Dashboard Cards
+        globalDashboard: "لوحة تحكم PFTISS العالمية",
+        walletTitle: "محفظة متعددة العملات",
+        walletDesc: "الأرصدة (وصول عالمي):",
+        pftStablecoin: "عملة PFTISS المستقرة",
+        eNaira: "eNaira",
+        goldToken: "رمز الذهب",
+        cocoaToken: "رمز الكاكاو",
+        tokenizedUSD: "دولار ممثل برموز",
+        carbonCredits: "اعتمادات الكربون",
+        manageWallet: "إدارة المحفظة",
+        paymentsTitle: "نظام دفع متعدد",
+        paymentsDesc: "ادفع بالعملات الورقية، أو العملات الرقمية للبنوك المركزية، أو العملات المستقرة، أو العملات المشفرة، أو الأصول الممثلة برموز، أو السلع الأساسية.",
+        makePayment: "إجراء دفعة",
+        govServicesTitle: "الخدمات الحكومية",
+        govServicesDesc: "ادفع الضرائب والتراخيص والتصاريح والمرافق في نيجيريا ودول منطقة التجارة الحرة القارية الأفريقية.",
+        payNow: "ادفع الآن",
+        recentTransactions: "المعاملات الحديثة",
+        viewAll: "عرض الكل",
+        defiTitle: "مركز التمويل اللامركزي للشمول",
+        defiDesc: "القروض الصغيرة، وبرامج النساء/الشباب، والادخار المبني على الألعاب.",
+        joinDeFi: "انضم إلى التمويل اللامركزي",
+        msmeTitle: "تمكين التجارة للمشاريع الصغيرة والمتوسطة",
+        msmeDesc: "الوصول إلى التمويل، وأدوات التجارة، وبناء القدرات.",
+        getStarted: "ابدأ الآن",
+        logisticsTitle: "الخدمات اللوجستية الذكية",
+        logisticsDesc: "تتبع الشحنات العالمية مع إنترنت الأشياء والذكاء الاصطناعي.",
+        trackNow: "تتبع الآن",
+        monetaryTitle: "السياسة النقدية القابلة للبرمجة",
+        monetaryDesc: "إدارة ضوابط التضخم وسعر السياسة النقدية عبر العقود الذكية.",
+        configurePolicy: "تكوين السياسة",
+        pensionTitle: "وحدة المعاشات",
+        pensionDesc: "معاشات صغيرة وخطط تقاعد باستخدام التمويل اللامركزي.",
+        enrollNow: "سجل الآن",
+        
+        // Trade Section
+        tradeTitle: "تسهيل التجارة العالمية وسلسلة التوريد",
+        msmeTradeEnablement: "تمكين التجارة للمشاريع الصغيرة والمتوسطة",
+        msmeTradeDesc: "الوصول إلى الأدوات الرقمية، وروابط السوق، وبناء القدرات.",
+        supplyChainFinance: "تمويل سلسلة التوريد",
+        supplyChainDesc: "تمويل مقابل أوامر الشراء العالمية.",
+        applyForFinance: "تقديم طلب تمويل",
+        aiCustoms: "إدارة الجمارك بالذكاء الاصطناعي",
+        aiCustomsDesc: "أتمتة التخليص الجمركي وقواعد المنشأ لمنطقة التجارة الحرة القارية الأفريقية.",
+        manageCustoms: "إدارة الجمارك",
+        smartContracts: "عقود التجارة الذكية",
+        smartContractsDesc: "أتمتة المشتريات العالمية والحسابات الضمانية.",
+        createContract: "إنشاء عقد",
+        crossBorderTax: "الضرائب العابرة للحدود",
+        crossBorderDesc: "حساب تلقائي للضرائب داخل أفريقيا.",
+        manageTaxes: "إدارة الضرائب",
+        
+        // Compliance Section
+        complianceTitle: "الامتثال والحوكمة",
+        kycTitle: "التحقق من الهوية ومكافحة غسل الأمول",
+        kycDesc: "تحقق من الهويات عالميًا مع التحقق من الهوية المحمول.",
+        startVerification: "بدء التحقق",
+        reportingTitle: "التقارير الفورية",
+        reportingDesc: "لوحات تحكم للمنظمين العالميين.",
+        viewReports: "عرض التقارير",
+        daoTitle: "حوكمة المنظمة اللامركزية",
+        daoDesc: "التصويت على ترقيات البروتوكول عالميًا.",
+        participate: "المشاركة",
+        
+        // Reserves Section
+        reservesTitle: "هيكل احتياطي السلع الأساسية",
+        reserveComposition: "تكوين الاحتياطي",
+        reserveDesc: "سلة ديناميكية من السلع الأساسية الأفريقية الداعمة للمدفوعات.",
+        viewDetails: "عرض التفاصيل",
+        storageTitle: "إطار تخزين الاحتياطي",
+        storageDesc: "إطار إيداع آمن عالمي للسلع الأساسية.",
+        goldStorage: "الذهب: خزائن برينكس (متعددة)",
+        oilStorage: "النفط: مستودعات مرخصة (نيجيريا، أنغولا)",
+        cocoaStorage: "الكاكاو: مستودعات AFEX (نيجيريا، غانا)",
+        copperStorage: "النحاس: مستودعات الكونغو الديمقراطية (جمهورية الكونغو الديمقراطية)",
+        viewStorage: "عرض التخزين",
+        
+        // Footer
+        footerTagline: "ربط موارد أفريقيا بالاقتصاد العالمي من خلال الابتكار مفتوح المصدر.",
+        quickLinks: "روابط سريعة",
+        contactUs: "اتصل بنا",
+        copyright: "© 2025 PFTISS. جميع الحقوق محفوظة."
+    },
+    sw: {
+        // Navigation
+        home: "Nyumbani",
+        dashboard: "Dashibodi",
+        trade: "Biashara",
+        compliance: "Uzingatifu",
+        
+        // Header
+        headertitlelag: "PFTISS: Kubadilisha Mustakabali wa Kiuchumi wa Afrika",
+        headertitlelagdescription: "Jukwaa la chanzo wazi, linalodhaminiwa na bidhaa kuu, linaloendesha biashara ndani ya Afrika, ujumuishaji wa kifedha, na ustawi endelevu ulimwenguni.",
+        explorenow: "Chunguza Sasa",
+        
+        // Sidebar
+        wallet: "Mkoba",
+        payments: "Malipo",
+        govServices: "Huduma za Serikali",
+        msmeEnablement: "Uwezeshaji wa MSME",
+        defiHub: "Kituo cha DeFi",
+        logistics: "Usafirishaji",
+        reserves: "Akiba",
+        pension: "Pensheni",
+        
+        // Dashboard Cards
+        globalDashboard: "Dashibodi ya Ulimwenguni ya PFTISS",
+        walletTitle: "Mkoba wa Fedha Nyingi",
+        walletDesc: "Mizania (Ufikiaji wa Ulimwenguni):",
+        pftStablecoin: "PFTISS Stablecoin",
+        eNaira: "eNaira",
+        goldToken: "Tokeni ya Dhahabu",
+        cocoaToken: "Tokeni ya Kokoa",
+        tokenizedUSD: "USD iliyotoholewa",
+        carbonCredits: "Mikopo ya Kaboni",
+        manageWallet: "Dhibiti Mkoba",
+        paymentsTitle: "Mfumo wa Malipo Nyingi",
+        paymentsDesc: "Lipa kwa fedha halisi, CBDC, sarafu thabiti, sarafu ya kidijitali, mali zilizotoholewa, au bidhaa kuu.",
+        makePayment: "Fanya Malipo",
+        govServicesTitle: "Huduma za Serikali",
+        govServicesDesc: "Lipa kodi, leseni, vibali, na huduma za umma nchini Nigeria na nchi za AfCFTA.",
+        payNow: "Lipa Sasa",
+        recentTransactions: "Manunuzi ya Hivi Karibuni",
+        viewAll: "Tazama Zote",
+        defiTitle: "Kituo cha DeFi kwa Ujumuishaji",
+        defiDesc: "Mikopo midogo, programu za wanawake/vijana, na akiba zilizojengwa kwa michezo.",
+        joinDeFi: "Jiunge na DeFi",
+        msmeTitle: "Biashara na Uwezeshaji wa MSME",
+        msmeDesc: "Ufikiaji wa ufadhili, zana za biashara, na ujenzi wa uwezo.",
+        getStarted: "Anza",
+        logisticsTitle: "Usafirishaji Smart",
+        logisticsDesc: "Fuatilia mizigo ya ulimwengu kwa IoT na AI.",
+        trackNow: "Fuatilia Sasa",
+        monetaryTitle: "Sera ya Fedha Inayoweza Kurekebishwa",
+        monetaryDesc: "Dhibiti udhibiti wa mfumuko wa bei na MPR kupitia mikataba smart.",
+        configurePolicy: "Sanidi Sera",
+        pensionTitle: "Moduli ya Pensheni",
+        pensionDesc: "Pensheni ndogo na mipango ya kustaafu ya DeFi.",
+        enrollNow: "Jisajili Sasa",
+        
+        // Trade Section
+        tradeTitle: "Urahisishaji wa Biashara ya Ulimwengu na Mlolongo wa Usambazaji",
+        msmeTradeEnablement: "Uwezeshaji wa Biashara wa MSME",
+        msmeTradeDesc: "Ufikiaji wa zana za kidijitali, miunganisho ya soko, na ujenzi wa uwezo.",
+        supplyChainFinance: "Ufadhili wa Mlolongo wa Usambazaji",
+        supplyChainDesc: "Pata ufadhili dhidi ya maagizo ya ununuli ya kimataifa.",
+        applyForFinance: "Omba Ufadhili",
+        aiCustoms: "Usimamizi wa Forodha wa AI",
+        aiCustomsDesc: "Rahisisha ukaguzi wa forodha na Kanuni za Asili kwa AfCFTA.",
+        manageCustoms: "Dhibiti Forodha",
+        smartContracts: "Mikataba Smart ya Biashara",
+        smartContractsDesc: "Rahisisha ununuzi wa kimataifa na escrow.",
+        createContract: "Unda Mkataba",
+        crossBorderTax: "Kodi ya Vipaka",
+        crossBorderDesc: "Hesabu kiotomatiki kodi ndani ya Afrika.",
+        manageTaxes: "Dhibiti Kodi",
+        
+        // Compliance Section
+        complianceTitle: "Uzingatifu na Utawala",
+        kycTitle: "Uthibitishaji wa KYC/AML",
+        kycDesc: "Thibitisha vitambulisho ulimwenguni kwa KYC inayoweza kubebwa.",
+        startVerification: "Anza Uthibitishaji",
+        reportingTitle: "Ripoti ya Wakati Halisi",
+        reportingDesc: "Dashibodi kwa wasimamizi wa kimataifa.",
+        viewReports: "Tazama Ripoti",
+        daoTitle: "Utawala wa DAO",
+        daoDesc: "Piga kura kwa sasisho za itifaki ulimwenguni.",
+        participate: "Shiriki",
+        
+        // Reserves Section
+        reservesTitle: "Muundo wa Akiba ya Bidhaa Kuu",
+        reserveComposition: "Muundo wa Akiba",
+        reserveDesc: "Kikapu chenye mwendo wa bidhaa kuu za Afrika kinachodhamini malipo.",
+        viewDetails: "Tazama Maelezo",
+        storageTitle: "Mfumo wa Hifadhi ya Akiba",
+        storageDesc: "Mfumo salama wa ulinzi wa kimataifa wa bidhaa kuu.",
+        goldStorage: "Dhahabu: Vaults za Brinks (Nyingi)",
+        oilStorage: "Mafuta: Maduka yaliyoidhinishwa (Nigeria, Angola)",
+        cocoaStorage: "Kokoa: Maghala ya AFEX (Nigeria, Ghana)",
+        copperStorage: "Shaba: Vituo vya DRC (Jamhuri ya Kidemokrasia ya Kongo)",
+        viewStorage: "Tazama Hifadhi",
+        
+        // Footer
+        footerTagline: "Kuunganisha rasilimali za Afrika na uchumi wa ulimwengu kwa uvumbuzi wa chanzo wazi.",
+        quickLinks: "Viungo vya Haraka",
+        contactUs: "Wasiliana Nasi",
+        copyright: "© 2025 PFTISS. Haki zote zimehifadhiwa."
+    }
+};
 
+// Then put all your functions after the translations object
+function changeLanguage() {
+    // Get the correct selector (desktop or mobile)
+    const selector = document.getElementById('language-selector') || 
+                    document.getElementById('mobile-language-selector');
+    
+    if (!selector) {
+        console.error("Language selector not found");
+        return;
+    }
+    
+    const lang = selector.value;
+    console.log("Changing language to:", lang); // Debug log
+    
+    // Update both selectors to stay in sync
+    const otherSelector = selector.id === 'language-selector' ? 
+                        document.getElementById('mobile-language-selector') : 
+                        document.getElementById('language-selector');
+    if (otherSelector) {
+        otherSelector.value = lang;
+    }
+    
+    // Update all elements with data-translate attribute
+    document.querySelectorAll('[data-translate]').forEach(element => {
+        const key = element.getAttribute('data-translate');
+        if (translations[lang] && translations[lang][key]) {
+            element.textContent = translations[lang][key];
+        } else {
+            console.warn(`Missing translation for key "${key}" in language "${lang}"`);
+        }
+    });
+    
+    // Store language preference
+    localStorage.setItem('pftiss-language', lang);
+    
+    // Show language change notification
+    const langName = selector.options[selector.selectedIndex].text;
+    showLanguageNotification(`${langName} activated`);
+}
 
+// Extend your translations object:
+translations.en.reserveComposition = "Reserve Composition";
+translations.fr.reserveComposition = "Composition des réserves";
+translations.ar.reserveComposition = "تكوين الاحتياطي";
+translations.sw.reserveComposition = "Muundo wa Akiba";
 
         const mockData = {
             user: {
@@ -580,6 +1053,7 @@ modalTitle.textContent = translations[lang][`${type}Title`] || modalContent.titl
             const modalMenu = document.getElementById('modalMenu');
             const modalForm = document.getElementById('modalForm');
             const modalResults = document.getElementById('modalResults');
+             const lang = document.getElementById('language-selector').value;
             
             // Clear previous content
             modalMenu.innerHTML = '';
@@ -588,8 +1062,9 @@ modalTitle.textContent = translations[lang][`${type}Title`] || modalContent.titl
             
             // Set title and description based on type
             const modalContent = getModalContent(type);
-            modalTitle.textContent = modalContent.title;
-            modalDescription.textContent = modalContent.description;
+            modalTitle.textContent = translations[lang]?.[`${type}Title`] || modalContent.title;
+            modalDescription.textContent = translations[lang]?.[`${type}Desc`] || modalContent.description;
+
             
             // Add menu buttons if they exist
             if (modalContent.menu) {
@@ -1344,149 +1819,7 @@ modalTitle.textContent = translations[lang][`${type}Title`] || modalContent.titl
             `;
         }
 
-        const translations = {
-    en: {
-        home: "Home",
-        dashboard: "Dashboard",
-        trade: "Trade",
-        compliance: "Compliance",
-        login: "Login",
-        wallet: "Wallet",
-        payments: "Payments",
-        govServices: "Government Services",
-        msmeEnablement: "MSME Enablement",
-        defiHub: "DeFi Hub",
-        logistics: "Logistics",
-        reserves: "Reserves",
-        pension: "Pension",
 
-        walletTitle: "Multi-Currency Wallet",
-        walletDesc: "Balances (Global Access):",
-        paymentsTitle: "Multi-Payment Rail",
-        paymentsDesc: "Pay with fiat, CBDC, stablecoin, crypto, tokenized assets, or commodities.",
-        govServicesTitle: "Government Services",
-        govServicesDesc: "Pay taxes, licenses, permits, and utilities in Nigeria and AfCFTA countries.",
-        recentTransactions: "Recent Transactions",
-        viewAll: "View All",
-        defiTitle: "DeFi Hub for Inclusion",
-        defiDesc: "Micro-lending, women/youth programs, and gamified savings.",
-        msmeTitle: "MSME Trade & Enablement",
-        msmeDesc: "Access financing, trade tools, and capacity building.",
-        logisticsTitle: "Smart Logistics",
-        logisticsDesc: "Track global shipments with IoT and AI.",
-        monetaryTitle: "Programmable Monetary Policy",
-        monetaryDesc: "Manage inflation controls and MPR via smart contracts.",
-        pensionTitle: "Pension Module",
-        pensionDesc: "Micro-pensions and DeFi retirement plans.",
-        
-        // Sections
-        tradeTitle: "Global Trade & Supply Chain Facilitation",
-        reservesTitle: "Commodity Reserve Structure",
-        reservesDesc: "Dynamic basket of African commodities backing payments.",
-        storageTitle: "Reserve Storage Framework",
-        storageDesc: "Secure global custodial framework for commodities.",
-        
-        // Buttons
-        manageWallet: "Manage Wallet",
-        makePayment: "Make Payment",
-        payNow: "Pay Now",
-        getStarted: "Get Started",
-        joinDeFi: "Join DeFi",
-        trackNow: "Track Now",
-        configurePolicy: "Configure Policy",
-        enrollNow: "Enroll Now",
-        viewDetails: "View Details"
-    },
-    fr: {
-        home: "Accueil",
-        dashboard: "Tableau de bord",
-        trade: "Commerce",
-        compliance: "Conformité",
-        login: "Connexion",
-        wallet: "Portefeuille",
-        payments: "Paiements",
-        govServices: "Services gouvernementaux",
-        msmeEnablement: "Activation PME",
-        defiHub: "Hub DeFi",
-        logistics: "Logistique",
-        reserves: "Réserves",
-        pension: "Pension",
-
-        // Dashboard
-        walletTitle: "Portefeuille multi-devises",
-        walletDesc: "Soldes (accès global) :",
-        paymentsTitle: "Système de paiement multiple",
-        paymentsDesc: "Payez avec fiat, CBDC, stablecoin, crypto, actifs tokenisés ou matières premières.",
-        govServicesTitle: "Services gouvernementaux",
-        govServicesDesc: "Payez les taxes, licences, permis et services publics au Nigeria et dans les pays de la ZLECAf.",
-        recentTransactions: "Transactions récentes",
-        viewAll: "Voir tout",
-        defiTitle: "Hub DeFi pour l'inclusion",
-        defiDesc: "Microcrédit, programmes pour femmes/jeunes et épargne ludique.",
-        msmeTitle: "Commerce et autonomisation des PME",
-        msmeDesc: "Accès au financement, outils commerciaux et renforcement des capacités.",
-        logisticsTitle: "Logistique intelligente",
-        logisticsDesc: "Suivez les expéditions mondiales avec IoT et IA.",
-        monetaryTitle: "Politique monétaire programmable",
-        monetaryDesc: "Gérez les contrôles de l'inflation et le TMP via des contrats intelligents.",
-        pensionTitle: "Module de retraite",
-        pensionDesc: "Micro-retraites et plans de retraite DeFi.",
-        
-        // Sections
-        tradeTitle: "Facilitation du commerce mondial et de la chaîne d'approvisionnement",
-        reservesTitle: "Structure des réserves de matières premières",
-        reservesDesc: "Panier dynamique de matières premières africaines soutenant les paiements.",
-        storageTitle: "Cadre de stockage des réserves",
-        storageDesc: "Cadre de garde sécurisé à l'échelle mondiale pour les matières premières.",
-        
-        // Buttons
-        manageWallet: "Gérer le portefeuille",
-        makePayment: "Effectuer un paiement",
-        payNow: "Payer maintenant",
-        getStarted: "Commencer",
-        joinDeFi: "Rejoindre DeFi",
-        trackNow: "Suivre maintenant",
-        configurePolicy: "Configurer la politique",
-        enrollNow: "S'inscrire maintenant",
-        viewDetails: "Voir les détails"
-    },
-    ar: {
-        home: "الصفحة الرئيسية",
-        dashboard: "لوحة التحكم",
-        trade: "تجارة",
-        compliance: "الامتثال",
-        login: "تسجيل الدخول",
-        wallet: "محفظة",
-        payments: "المدفوعات",
-        govServices: "الخدمات الحكومية",
-        msmeEnablement: "تمكين المشاريع الصغيرة والمتوسطة",
-        defiHub: "مركز التمويل اللامركزي",
-        logistics: "الخدمات اللوجستية",
-        reserves: "احتياطيات",
-        pension: "معاش",
-    },
-    sw: {
-        home: "Nyumbani",
-        dashboard: "Dashibodi",
-        trade: "Biashara",
-        compliance: "Uzingatifu",
-        login: "Ingia",
-        wallet: "Mkoba",
-        payments: "Malipo",
-        govServices: "Huduma za Serikali",
-        msmeEnablement: "Uwezeshaji wa MSME",
-        defiHub: "Kituo cha DeFi",
-        logistics: "Usafirishaji",
-        reserves: "Akiba",
-        pension: "Pensheni",
-    }
-};
-
-// Extend your translations object:
-translations.en.reserveComposition = "Reserve Composition";
-translations.fr.reserveComposition = "Composition des réserves";
-translations.ar.reserveComposition = "تكوين الاحتياطي";
-translations.sw.reserveComposition = "Muundo wa Akiba";
 
         // Filter transactions
         function filterTransactions(type) {
@@ -1518,7 +1851,7 @@ translations.sw.reserveComposition = "Muundo wa Akiba";
         }
 
 function changeLanguage() {
-    const selector = document.getElementById('language-selector');
+    const selector = document.getElementById('language-selector') || document.getElementById('mobile-language-selector');
     const lang = selector.value;
     
     // Update all elements with data-translate attribute
@@ -1529,42 +1862,23 @@ function changeLanguage() {
         }
     });
     
-    // Update all buttons with data-translate-button attribute
-    document.querySelectorAll('[data-translate-button]').forEach(button => {
-        const key = button.getAttribute('data-translate-button');
-        if (translations[lang] && translations[lang][key]) {
-            button.textContent = translations[lang][key];
+    // Update modal titles and descriptions when language changes
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    if (modalTitle && modalDescription) {
+        const currentModalType = modalTitle.textContent.toLowerCase().replace(/\s+/g, '');
+        if (translations[lang] && translations[lang][`${currentModalType}Title`]) {
+            modalTitle.textContent = translations[lang][`${currentModalType}Title`];
         }
-    });
-    
-    // Update titles and descriptions in cards
-    document.querySelectorAll('.card h3').forEach(title => {
-        const key = title.textContent.trim().replace(/\s+/g, '') + 'Title';
-        if (translations[lang] && translations[lang][key]) {
-            title.textContent = translations[lang][key];
+        if (translations[lang] && translations[lang][`${currentModalType}Desc`]) {
+            modalDescription.textContent = translations[lang][`${currentModalType}Desc`];
         }
-    });
-    
-    document.querySelectorAll('.card p.text-gray-600').forEach(desc => {
-        const parentTitle = desc.previousElementSibling?.textContent.trim().replace(/\s+/g, '') || '';
-        const key = parentTitle + 'Desc';
-        if (translations[lang] && translations[lang][key]) {
-            desc.textContent = translations[lang][key];
-        }
-    });
-    
-    // Update section titles
-    document.querySelectorAll('section h2').forEach(sectionTitle => {
-        const key = sectionTitle.textContent.trim().replace(/\s+/g, '') + 'Title';
-        if (translations[lang] && translations[lang][key]) {
-            sectionTitle.textContent = translations[lang][key];
-        }
-    });
+    }
     
     // Store language preference
     localStorage.setItem('pftiss-language', lang);
     
-    // Optional: Show a small notification instead of alert
+    // Show language change notification
     const langName = selector.options[selector.selectedIndex].text;
     showLanguageNotification(`${langName} activated`);
 }
@@ -1887,11 +2201,16 @@ function showLanguageNotification(message) {
                     console.log('API initialized:', response);
                 });
 
-            function loadLanguagePreference() {
-    const savedLang = localStorage.getItem('pftiss-language') || 'en';
-    document.getElementById('language-selector').value = savedLang;
-    changeLanguage();
-}
+        function loadLanguagePreference() {
+            const savedLang = localStorage.getItem('pftiss-language') || 'en';
+            const selector = document.getElementById('language-selector');
+            const mobileSelector = document.getElementById('mobile-language-selector');
+            
+            if (selector) selector.value = savedLang;
+            if (mobileSelector) mobileSelector.value = savedLang;
+            
+            changeLanguage();
+        }
 
 
                 
@@ -1915,5 +2234,6 @@ function showLanguageNotification(message) {
             formatCurrency
         };
     </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
