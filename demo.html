@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFTISS CBDC Prototype</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // API Base URL
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        // Wallet Component
+        function Wallet({ wallet, handleRemittance, handleBondPurchase, handleFXTrade, handleSecurityTrade }) {
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold mb-4">Multi-Currency Wallet</h2>
+                    <div className="grid grid-cols-2 gap-4">
+                        {Object.entries(wallet).map(([asset, balance]) => (
+                            <div key={asset} className="p-4 bg-gray-50 rounded">
+                                <p className="font-medium">{asset.replace(/([A-Z])/g, ' $1').trim()}:</p>
+                                <p>{balance} {asset === "eNaira" ? "₦" : asset === "usdToken" ? "$" : asset === "goldToken" ? "oz" : asset === "cocoaToken" ? "kg" : asset === "carbonCredits" ? "tCO2e" : "PFT"}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-6 space-y-4">
+                        <div>
+                            <h3 className="font-semibold">Send Remittance</h3>
+                            <div className="flex space-x-2">
+                                <input type="number" id="remittanceAmount" placeholder="Amount" className="border p-2 rounded" />
+                                <select id="remittanceAsset" className="border p-2 rounded">
+                                    <option value="eNaira">eNaira</option>
+                                    <option value="pftStablecoin">PFT Stablecoin</option>
+                                    <option value="usdToken">USD Token</option>
+                                </select>
+                                <input type="text" id="recipient" placeholder="Recipient" className="border p-2 rounded" />
+                                <button onClick={() => {
+                                    const amount = parseFloat(document.getElementById("remittanceAmount").value);
+                                    const asset = document.getElementById("remittanceAsset").value;
+                                    const recipient = document.getElementById("recipient").value;
+                                    handleRemittance(amount, recipient, asset);
+                                }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold">Buy T-Bill/Bond</h3>
+                            <div className="flex space-x-2">
+                                <select id="securityType" className="border p-2 rounded">
+                                    <option value="tBill">90-Day T-Bill (Yield: 5%)</option>
+                                    <option value="fgnBond">FGN Bond 2027 (Yield: 7%)</option>
+                                    <option value="sukuk">Sukuk 2025 (Yield: 6%)</option>
+                                </select>
+                                <input type="number" id="securityAmount" placeholder="Units" className="border p-2 rounded" />
+                                <button onClick={() => {
+                                    const security = document.getElementById("securityType").value;
+                                    const amount = parseFloat(document.getElementById("securityAmount").value);
+                                    handleBondPurchase(security, amount);
+                                }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Purchase</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold">FX Settlement</h3>
+                            <div className="flex space-x-2">
+                                <input type="number" id="fxAmount" placeholder="USDw Amount" className="border p-2 rounded" />
+                                <select id="fxPair" className="border p-2 rounded">
+                                    <option value="USDw/NGNw">USDw/NGNw (Rate: 1500)</option>
+                                </select>
+                                <button onClick={() => {
+                                    const amount = parseFloat(document.getElementById("fxAmount").value);
+                                    const pair = document.getElementById("fxPair").value;
+                                    handleFXTrade(amount, pair);
+                                }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Trade</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Transactions Component
+        function Transactions({ transactions }) {
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+                    <h2 className="text-xl font-semibold mb-4">Recent Transactions</h2>
+                    <ul className="space-y-2">
+                        {transactions.map((txn, index) => (
+                            <li key={txn.id || index} className="p-2 bg-gray-50 rounded">
+                                {txn.type}: {txn.amount} {txn.asset} from {txn.from} to {txn.to} on {txn.date}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [wallet, setWallet] = useState({});
+            const [transactions, setTransactions] = useState([]);
+            const [activeTab, setActiveTab] = useState("dashboard");
+            const [error, setError] = useState(null);
+
+            // Fetch Wallet and Transactions on Mount
+            useEffect(() => {
+                const fetchWallet = async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/wallet/user1`);
+                        if (!response.ok) throw new Error('Failed to fetch wallet');
+                        const data = await response.json();
+                        setWallet(data);
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                };
+
+                const fetchTransactions = async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/transactions`);
+                        if (!response.ok) throw new Error('Failed to fetch transactions');
+                        const data = await response.json();
+                        setTransactions(data);
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                };
+
+                fetchWallet();
+                fetchTransactions();
+            }, []);
+
+            // Handle Remittance
+            const handleRemittance = async (amount, recipient, asset) => {
+                if (!amount || !recipient || !asset) {
+                    setError('Please fill all fields');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/remittance`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: 'user1', amount, asset, recipient })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Remittance failed');
+                    setWallet(prev => ({ ...prev, [asset]: prev[asset] - amount }));
+                    setTransactions(prev => [...prev, data.transaction]);
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle Bond Purchase
+            const handleBondPurchase = async (security, amount) => {
+                if (!security || !amount) {
+                    setError('Please select a security and amount');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/bonds`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: 'user1', security, amount })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Bond purchase failed');
+                    setWallet(prev => ({ ...prev, eNaira: prev.eNaira - amount * (security === 'tBill' ? 1000 : security === 'fgnBond' ? 5000 : 3000) }));
+                    setTransactions(prev => [...prev, data.transaction]);
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle FX Trade
+            const handleFXTrade = async (amount, pair) => {
+                if (!amount || !pair) {
+                    setError('Please enter amount and select FX pair');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/fx`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: 'user1', amount, pair })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'FX trade failed');
+                    setWallet(prev => ({ ...prev, usdToken: prev.usdToken - amount, eNaira: prev.eNaira + data.converted }));
+                    setTransactions(prev => [...prev, data.transaction]);
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle Security Trade
+            const handleSecurityTrade = async (security, amount) => {
+                if (!security || !amount) {
+                    setError('Please select a security and amount');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/securities`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId: 'user1', security, amount })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Security trade failed');
+                    setWallet(prev => ({ ...prev, eNaira: prev.eNaira - amount * (security === 'tBill' ? 1000 : security === 'fgnBond' ? 5000 : 3000) }));
+                    setTransactions(prev => [...prev, data.transaction]);
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-100 font-sans">
+                    {/* Header */}
+                    <header className="bg-blue-800 text-white p-4 flex justify-between items-center">
+                        <h1 className="text-2xl font-bold">PFTISS CBDC Prototype</h1>
+                        <nav className="space-x-4">
+                            <button onClick={() => setActiveTab("dashboard")} className="hover:underline">Dashboard</button>
+                            <button onClick={() => setActiveTab("remittance")} className="hover:underline">Remittance</button>
+                            <button onClick={() => setActiveTab("bonds")} className="hover:underline">T-Bills/Bonds</button>
+                            <button onClick={() => setActiveTab("fx")} className="hover:underline">FX Settlement</button>
+                            <button onClick={() => setActiveTab("securities")} className="hover:underline">Securities</button>
+                        </nav>
+                    </header>
+
+                    {/* Main Content */}
+                    <main className="container mx-auto p-6">
+                        {error && (
+                            <div className="bg-red-100 text-red-700 p-4 rounded mb-4">
+                                {error}
+                            </div>
+                        )}
+                        {activeTab === "dashboard" && (
+                            <div>
+                                <Wallet
+                                    wallet={wallet}
+                                    handleRemittance={handleRemittance}
+                                    handleBondPurchase={handleBondPurchase}
+                                    handleFXTrade={handleFXTrade}
+                                    handleSecurityTrade={handleSecurityTrade}
+                                />
+                                <Transactions transactions={transactions} />
+                            </div>
+                        )}
+                        {activeTab === "remittance" && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">Cross-Border Remittance</h2>
+                                <div className="flex space-x-2">
+                                    <input type="number" id="remittanceAmount" placeholder="Amount" className="border p-2 rounded" />
+                                    <select id="remittanceAsset" className="border p-2 rounded">
+                                        <option value="eNaira">eNaira</option>
+                                        <option value="pftStablecoin">PFT Stablecoin</option>
+                                        <option value="usdToken">USD Token</option>
+                                    </select>
+                                    <input type="text" id="recipient" placeholder="Recipient (e.g., Ghana, UAE)" className="border p-2 rounded" />
+                                    <button onClick={() => {
+                                        const amount = parseFloat(document.getElementById("remittanceAmount").value);
+                                        const asset = document.getElementById("remittanceAsset").value;
+                                        const recipient = document.getElementById("recipient").value;
+                                        handleRemittance(amount, recipient, asset);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send Remittance</button>
+                                </div>
+                            </div>
+                        )}
+                        {activeTab === "bonds" && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">Tokenized Treasury Bills & Bonds</h2>
+                                <div className="flex space-x-2">
+                                    <select id="securityType" className="border p-2 rounded">
+                                        <option value="tBill">90-Day T-Bill (Yield: 5%)</option>
+                                        <option value="fgnBond">FGN Bond 2027 (Yield: 7%)</option>
+                                        <option value="sukuk">Sukuk 2025 (Yield: 6%)</option>
+                                    </select>
+                                    <input type="number" id="securityAmount" placeholder="Units" className="border p-2 rounded" />
+                                    <button onClick={() => {
+                                        const security = document.getElementById("securityType").value;
+                                        const amount = parseFloat(document.getElementById("securityAmount").value);
+                                        handleBondPurchase(security, amount);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Purchase</button>
+                                </div>
+                            </div>
+                        )}
+                        {activeTab === "fx" && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">Foreign Exchange Settlement</h2>
+                                <div className="flex space-x-2">
+                                    <input type="number" id="fxAmount" placeholder="USDw Amount" className="border p-2 rounded" />
+                                    <select id="fxPair" className="border p-2 rounded">
+                                        <option value="USDw/NGNw">USDw/NGNw (Rate: 1500)</option>
+                                    </select>
+                                    <button onClick={() => {
+                                        const amount = parseFloat(document.getElementById("fxAmount").value);
+                                        const pair = document.getElementById("fxPair").value;
+                                        handleFXTrade(amount, pair);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Execute Trade</button>
+                                </div>
+                            </div>
+                        )}
+                        {activeTab === "securities" && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">Tokenized Securities Settlement</h2>
+                                <div className="flex space-x-2">
+                                    <select id="securityType" className="border p-2 rounded">
+                                        <option value="tBill">90-Day T-Bill</option>
+                                        <option value="fgnBond">FGN Bond 2027</option>
+                                        <option value="sukuk">Sukuk 2025</option>
+                                    </select>
+                                    <input type="number" id="securityAmount" placeholder="Units" className="border p-2 rounded" />
+                                    <button onClick={() => {
+                                        const security = document.getElementById("securityType").value;
+                                        const amount = parseFloat(document.getElementById("securityAmount").value);
+                                        handleSecurityTrade(security, amount);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Trade Security</button>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Footer */}
+                    <footer className="bg-blue-800 text-white p-4 text-center">
+                        <p>© 2025 PFTISS. All rights reserved.</p>
+                        <p>Contact: <a href="mailto:support@pftiss.com" className="underline">support@pftiss.com</a> | +234 123 456 7890</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

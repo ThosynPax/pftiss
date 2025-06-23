@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFTISS CBDC Prototype</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.5.1/dist/socket.io.min.js"></script>
+    <script src="https://unpkg.com/i18next@21.9.1/dist/umd/i18next.min.js"></script>
+    <script src="https://unpkg.com/react-i18next@11.18.6/dist/umd/react-i18next.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { useTranslation } = ReactI18next;
+
+        // Initialize i18next
+        i18n.use(ReactI18next.initReactI18next).init({
+            resources: {
+                en: {
+                    translation: {
+                        dashboard: 'Dashboard',
+                        remittance: 'Remittance',
+                        bonds: 'T-Bills/Bonds',
+                        fx: 'FX Settlement',
+                        securities: 'Securities',
+                        login: 'Login',
+                        register: 'Register',
+                        portfolio: 'Portfolio Overview',
+                        totalValue: 'Total Value',
+                        currentRate: 'Current USDw/NGNw Rate',
+                        holdings: 'Bond and T-Bill Holdings',
+                        transactions: 'Recent Transactions'
+                    }
+                },
+                yo: {
+                    translation: {
+                        dashboard: 'Dasibodu',
+                        remittance: 'Ipadabọ',
+                        bonds: 'Awọn Iwe-owo/Iwe-idẹ',
+                        fx: 'Idasile Owo Ajeji',
+                        securities: 'Awọn Ohun-ini Idoko-owo',
+                        login: 'Wọle',
+                        register: 'Forukọsilẹ',
+                        portfolio: 'Akopọ Idoko-owo',
+                        totalValue: 'Apapọ Iye',
+                        currentRate: 'Oṣuwọn USDw/NGNw Lọwọlọwọ',
+                        holdings: 'Awọn Iwe-owo ati Iwe-idẹ',
+                        transactions: 'Awọn Idunadura Aipẹ'
+                    }
+                },
+                ha: {
+                    translation: {
+                        dashboard: 'Dashboard',
+                        remittance: 'Sallama',
+                        bonds: 'Takardun Kudi/Bonds',
+                        fx: 'Gyaran Kuɗi na Waje',
+                        securities: 'Kayan Tsaro',
+                        login: 'Shiga',
+                        register: 'Rijista',
+                        portfolio: 'Bayanan Jari',
+                        totalValue: 'Jimlar Daraja',
+                        currentRate: 'Yawan USDw/NGNw na Yanzu',
+                        holdings: 'Takardun Kudi da Bonds',
+                        transactions: 'Ma’amaloli na Kwanan Nan'
+                    }
+                }
+            },
+            lng: 'en',
+            fallbackLng: 'en'
+        });
+
+        // API Base URL
+        const API_BASE_URL = 'http://localhost:3000/api';
+
+        // Login Component
+        function Login({ setToken }) {
+            const { t } = useTranslation();
+            const [userId, setUserId] = useState('');
+            const [password, setPassword] = useState('');
+            const [error, setError] = useState(null);
+
+            const handleLogin = async () => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId, password })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Login failed');
+                    setToken(data.token);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-10">
+                    <h2 className="text-xl font-semibold mb-4">{t('login')}</h2>
+                    <input type="text" placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} className="border p-2 rounded w-full mb-2" />
+                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full mb-2" />
+                    <button onClick={handleLogin} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">{t('login')}</button>
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                </div>
+            );
+        }
+
+        // Register Component
+        function Register({ setToken }) {
+            const { t } = useTranslation();
+            const [userId, setUserId] = useState('');
+            const [name, setName] = useState('');
+            const [bvn, setBvn] = useState('');
+            const [password, setPassword] = useState('');
+            const [error, setError] = useState(null);
+
+            const handleRegister = async () => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ userId, name, bvn, password })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Registration failed');
+                    setToken(data.token);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-10">
+                    <h2 className="text-xl font-semibold mb-4">{t('register')}</h2>
+                    <input type="text" placeholder="User ID" value={userId} onChange={(e) => setUserId(e.target.value)} className="border p-2 rounded w-full mb-2" />
+                    <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="border p-2 rounded w-full mb-2" />
+                    <input type="text" placeholder="BVN" value={bvn} onChange={(e) => setBvn(e.target.value)} className="border p-2 rounded w-full mb-2" />
+                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="border p-2 rounded w-full mb-2" />
+                    <button onClick={handleRegister} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">{t('register')}</button>
+                    {error && <p className="text-red-500 mt-2">{error}</p>}
+                </div>
+            );
+        }
+
+        // Wallet Component
+        function Wallet({ wallet, handleRemittance, handleBondPurchase, handleFXTrade, handleSecurityTrade, fxRate, userId }) {
+            const { t } = useTranslation();
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold mb-4">{t('dashboard')}</h2>
+                    <div className="grid grid-cols-2 gap-4">
+                        {Object.entries(wallet).map(([asset, balance]) => (
+                            <div key={asset} className="p-4 bg-gray-50 rounded">
+                                <p className="font-medium">{asset.replace(/([A-Z])/g, ' $1').trim()}:</p>
+                                <p>{balance} {asset === "eNaira" ? "₦" : asset === "usdToken" ? "$" : asset === "goldToken" ? "oz" : asset === "cocoaToken" ? "kg" : asset === "carbonCredits" ? "tCO2e" : "PFT"}</p>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-6 space-y-4">
+                        <div>
+                            <h3 className="font-semibold">{t('remittance')}</h3>
+                            <div className="flex space-x-2">
+                                <input type="number" id="remittanceAmount" placeholder="Amount" className="border p-2 rounded" />
+                                <select id="remittanceAsset" className="border p-2 rounded">
+                                    <option value="eNaira">eNaira</option>
+                                    <option value="pftStablecoin">PFT Stablecoin</option>
+                                    <option value="usdToken">USD Token</option>
+                                </select>
+                                <input type="text" id="recipient" placeholder="Recipient (e.g., Ghana, UAE)" className="border p-2 rounded" />
+                                <button onClick={() => {
+                                    const amount = parseFloat(document.getElementById("remittanceAmount").value);
+                                    const asset = document.getElementById("remittanceAsset").value;
+                                    const recipient = document.getElementById("recipient").value;
+                                    handleRemittance(amount, recipient, asset);
+                                }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold">{t('bonds')}</h3>
+                            <div className="flex space-x-2">
+                                <select id="securityType" className="border p-2 rounded">
+                                    <option value="tBill">90-Day T-Bill (Yield: 5%)</option>
+                                    <option value="fgnBond">FGN Bond 2027 (Yield: 7%)</option>
+                                    <option value="sukuk">Sukuk 2025 (Yield: 6%)</option>
+                                </select>
+                                <input type="number" id="securityAmount" placeholder="Units" className="border p-2 rounded" />
+                                <button onClick={() => {
+                                    const security = document.getElementById("securityType").value;
+                                    const amount = parseFloat(document.getElementById("securityAmount").value);
+                                    handleBondPurchase(security, amount);
+                                }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Purchase</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 className="font-semibold">{t('fx')}</h3>
+                            <div className="flex space-x-2">
+                                <input type="number" id="fxAmount" placeholder="USDw Amount" className="border p-2 rounded" />
+                                <select id="fxPair" className="border p-2 rounded">
+                                    <option value="USDw/NGNw">USDw/NGNw (Rate: {fxRate})</option>
+                                </select>
+                                <button onClick={() => {
+                                    const amount = parseFloat(document.getElementById("fxAmount").value);
+                                    const pair = document.getElementById("fxPair").value;
+                                    handleFXTrade(amount, pair);
+                                }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Trade</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Holdings Component
+        function Holdings({ holdings, handlePayout, handleRollover }) {
+            const { t } = useTranslation();
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+                    <h2 className="text-xl font-semibold mb-4">{t('holdings')}</h2>
+                    <ul className="space-y-2">
+                        {holdings.map((holding, index) => (
+                            <li key={index} className="p-2 bg-gray-50 rounded flex justify-between items-center">
+                                <span>
+                                    {holding.security} ({holding.amount} units, Interest: ₦{holding.accruedInterest.toFixed(2)})
+                                </span>
+                                <div>
+                                    <button onClick={() => handlePayout(holding.index)} className="bg-green-600 text-white px-3 py-1 rounded mr-2 hover:bg-green-700">Payout</button>
+                                    <select id={`rollover-${holding.index}`} className="border p-1 rounded">
+                                        <option value="tBill">90-Day T-Bill</option>
+                                        <option value="fgnBond">FGN Bond 2027</option>
+                                        <option value="sukuk">Sukuk 2025</option>
+                                    </select>
+                                    <button onClick={() => {
+                                        const newSecurity = document.getElementById(`rollover-${holding.index}`).value;
+                                        handleRollover(holding.index, newSecurity);
+                                    }} className="bg-blue-600 text-white px-3 py-1 rounded ml-2 hover:bg-blue-700">Rollover</button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        // Transactions Component
+        function Transactions({ transactions }) {
+            const { t } = useTranslation();
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+                    <h2 className="text-xl font-semibold mb-4">{t('transactions')}</h2>
+                    <ul className="space-y-2">
+                        {transactions.map((txn, index) => (
+                            <li key={txn.id || index} className="p-2 bg-gray-50 rounded">
+                                {txn.type}: {txn.amount} {txn.asset} from {txn.from} to {txn.to} on {txn.date}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+        }
+
+        // Portfolio Component
+        function Portfolio({ wallet, holdings, fxRate }) {
+            const { t } = useTranslation();
+            const totalValue = Object.entries(wallet).reduce((sum, [asset, balance]) => {
+                return sum + (asset === 'eNaira' ? balance : asset === 'usdToken' ? balance * fxRate : 0);
+            }, 0) + holdings.reduce((sum, h) => sum + h.amount * h.price + h.accruedInterest, 0);
+            return (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold mb-4">{t('portfolio')}</h2>
+                    <p>{t('totalValue')}: ₦{totalValue.toFixed(2)}</p>
+                    <p>{t('currentRate')}: {fxRate}</p>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const { t } = useTranslation();
+            const [wallet, setWallet] = useState({});
+            const [transactions, setTransactions] = useState([]);
+            const [holdings, setHoldings] = useState([]);
+            const [fxRate, setFxRate] = useState(1500);
+            const [activeTab, setActiveTab] = useState('login');
+            const [token, setToken] = useState(null);
+            const [error, setError] = useState(null);
+            const [userId, setUserId] = useState('user1');
+
+            // WebSocket Connection
+            useEffect(() => {
+                const socket = io(API_BASE_URL);
+                socket.on('transaction', (txn) => {
+                    setTransactions(prev => [...prev, txn]);
+                });
+                socket.on('wallet', (updatedWallet) => {
+                    if (updatedWallet.userId === userId) setWallet(updatedWallet);
+                });
+                socket.on('holding', (holding) => {
+                    if (holding.userId === userId) {
+                        setHoldings(prev => [...prev, { ...holding, accruedInterest: 0, index: prev.length }]);
+                    }
+                });
+                socket.on('poolUpdate', async () => {
+                    const response = await fetch(`${API_BASE_URL}/fx/rate/USDw/NGNw`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const data = await response.json();
+                    setFxRate(data.rate);
+                });
+                return () => socket.disconnect();
+            }, [token, userId]);
+
+            // Fetch Wallet, Transactions, Holdings, and FX Rate
+            useEffect(() => {
+                if (!token) return;
+                const fetchWallet = async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/wallet/${userId}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        if (!response.ok) throw new Error('Failed to fetch wallet');
+                        const data = await response.json();
+                        setWallet(data);
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                };
+                const fetchTransactions = async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/transactions`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        if (!response.ok) throw new Error('Failed to fetch transactions');
+                        const data = await response.json();
+                        setTransactions(data);
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                };
+                const fetchHoldings = async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/holdings/${userId}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        if (!response.ok) throw new Error('Failed to fetch holdings');
+                        const data = await response.json();
+                        setHoldings(data);
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                };
+                const fetchFxRate = async () => {
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/fx/rate/USDw/NGNw`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        if (!response.ok) throw new Error('Failed to fetch FX rate');
+                        const data = await response.json();
+                        setFxRate(data.rate);
+                    } catch (err) {
+                        setError(err.message);
+                    }
+                };
+                fetchWallet();
+                fetchTransactions();
+                fetchHoldings();
+                fetchFxRate();
+            }, [token, userId]);
+
+            // Handle Remittance
+            const handleRemittance = async (amount, recipient, asset) => {
+                if (!amount || !recipient || !asset) {
+                    setError('Please fill all fields');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/remittance`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ amount, asset, recipient })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Remittance failed');
+                    setWallet(prev => ({ ...prev, [asset]: prev[asset] - amount }));
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle Bond Purchase
+            const handleBondPurchase = async (security, amount) => {
+                if (!security || !amount) {
+                    setError('Please select a security and amount');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/bonds`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ security, amount })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Bond purchase failed');
+                    setWallet(prev => ({ ...prev, eNaira: prev.eNaira - amount * (security === 'tBill' ? 1000 : security === 'fgnBond' ? 5000 : 3000) }));
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle FX Trade
+            const handleFXTrade = async (amount, pair) => {
+                if (!amount || !pair) {
+                    setError('Please enter amount and select FX pair');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/fx`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ amount, pair })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'FX trade failed');
+                    setWallet(prev => ({ ...prev, usdToken: prev.usdToken - amount, eNaira: prev.eNaira + data.converted }));
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle Security Trade
+            const handleSecurityTrade = async (security, amount) => {
+                if (!security || !amount) {
+                    setError('Please select a security and amount');
+                    return;
+                }
+                try {
+                    const response = await fetch(`${API_BASE_URL}/securities`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ security, amount })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Security trade failed');
+                    setWallet(prev => ({ ...prev, eNaira: prev.eNaira - amount * (security === 'tBill' ? 1000 : security === 'fgnBond' ? 5000 : 3000) }));
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle Payout
+            const handlePayout = async (holdingIndex) => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/payout`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ holdingIndex })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Payout failed');
+                    setWallet(prev => ({ ...prev, eNaira: prev.eNaira + parseFloat(data.message.match(/[\d.]+/)[0]) }));
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            // Handle Rollover
+            const handleRollover = async (holdingIndex, newSecurity) => {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/rollover`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ holdingIndex, newSecurity })
+                    });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error || 'Rollover failed');
+                    setHoldings(prev => prev.filter((_, i) => i !== holdingIndex));
+                    alert(data.message);
+                    setError(null);
+                } catch (err) {
+                    setError(err.message);
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-100 font-sans">
+                    {/* Header */}
+                    <header className="bg-blue-800 text-white p-4 flex justify-between items-center">
+                        <h1 className="text-2xl font-bold">PFTISS CBDC Prototype</h1>
+                        {token && (
+                            <nav className="space-x-4">
+                                <button onClick={() => setActiveTab('dashboard')} className="hover:underline">{t('dashboard')}</button>
+                                <button onClick={() => setActiveTab('remittance')} className="hover:underline">{t('remittance')}</button>
+                                <button onClick={() => setActiveTab('bonds')} className="hover:underline">{t('bonds')}</button>
+                                <button onClick={() => setActiveTab('fx')} className="hover:underline">{t('fx')}</button>
+                                <button onClick={() => setActiveTab('securities')} className="hover:underline">{t('securities')}</button>
+                                <select onChange={(e) => i18n.changeLanguage(e.target.value)} className="bg-blue-600 text-white p-1 rounded">
+                                    <option value="en">English</option>
+                                    <option value="yo">Yoruba</option>
+                                    <option value="ha">Hausa</option>
+                                </select>
+                            </nav>
+                        )}
+                    </header>
+
+                    {/* Main Content */}
+                    <main className="container mx-auto p-6">
+                        {error && (
+                            <div className="bg-red-100 text-red-700 p-4 rounded mb-4">
+                                {error}
+                            </div>
+                        )}
+                        {!token && activeTab === 'login' && <Login setToken={setToken} />}
+                        {!token && activeTab === 'register' && <Register setToken={setToken} />}
+                        {token && activeTab === 'dashboard' && (
+                            <div>
+                                <Portfolio wallet={wallet} holdings={holdings} fxRate={fxRate} />
+                                <Wallet
+                                    wallet={wallet}
+                                    handleRemittance={handleRemittance}
+                                    handleBondPurchase={handleBondPurchase}
+                                    handleFXTrade={handleFXTrade}
+                                    handleSecurityTrade={handleSecurityTrade}
+                                    fxRate={fxRate}
+                                    userId={userId}
+                                />
+                                <Holdings
+                                    holdings={holdings}
+                                    handlePayout={handlePayout}
+                                    handleRollover={handleRollover}
+                                />
+                                <Transactions transactions={transactions} />
+                            </div>
+                        )}
+                        {token && activeTab === 'remittance' && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">{t('remittance')}</h2>
+                                <div className="flex space-x-2">
+                                    <input type="number" id="remittanceAmount" placeholder="Amount" className="border p-2 rounded" />
+                                    <select id="remittanceAsset" className="border p-2 rounded">
+                                        <option value="eNaira">eNaira</option>
+                                        <option value="pftStablecoin">PFT Stablecoin</option>
+                                        <option value="usdToken">USD Token</option>
+                                    </select>
+                                    <input type="text" id="recipient" placeholder="Recipient (e.g., Ghana, UAE)" className="border p-2 rounded" />
+                                    <button onClick={() => {
+                                        const amount = parseFloat(document.getElementById("remittanceAmount").value);
+                                        const asset = document.getElementById("remittanceAsset").value;
+                                        const recipient = document.getElementById("recipient").value;
+                                        handleRemittance(amount, recipient, asset);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send Remittance</button>
+                                </div>
+                            </div>
+                        )}
+                        {token && activeTab === 'bonds' && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">{t('bonds')}</h2>
+                                <div className="flex space-x-2">
+                                    <select id="securityType" className="border p-2 rounded">
+                                        <option value="tBill">90-Day T-Bill (Yield: 5%)</option>
+                                        <option value="fgnBond">FGN Bond 2027 (Yield: 7%)</option>
+                                        <option value="sukuk">Sukuk 2025 (Yield: 6%)</option>
+                                    </select>
+                                    <input type="number" id="securityAmount" placeholder="Units" className="border p-2 rounded" />
+                                    <button onClick={() => {
+                                        const security = document.getElementById("securityType").value;
+                                        const amount = parseFloat(document.getElementById("securityAmount").value);
+                                        handleBondPurchase(security, amount);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Purchase</button>
+                                </div>
+                            </div>
+                        )}
+                        {token && activeTab === 'fx' && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">{t('fx')}</h2>
+                                <div className="flex space-x-2">
+                                    <input type="number" id="fxAmount" placeholder="USDw Amount" className="border p-2 rounded" />
+                                    <select id="fxPair" className="border p-2 rounded">
+                                        <option value="USDw/NGNw">USDw/NGNw (Rate: {fxRate})</option>
+                                    </select>
+                                    <button onClick={() => {
+                                        const amount = parseFloat(document.getElementById("fxAmount").value);
+                                        const pair = document.getElementById("fxPair").value;
+                                        handleFXTrade(amount, pair);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Execute Trade</button>
+                                </div>
+                            </div>
+                        )}
+                        {token && activeTab === 'securities' && (
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <h2 className="text-xl font-semibold mb-4">{t('securities')}</h2>
+                                <div className="flex space-x-2">
+                                    <select id="securityType" className="border p-2 rounded">
+                                        <option value="tBill">90-Day T-Bill</option>
+                                        <option value="fgnBond">FGN Bond 2027</option>
+                                        <option value="sukuk">Sukuk 2025</option>
+                                    </select>
+                                    <input type="number" id="securityAmount" placeholder="Units" className="border p-2 rounded" />
+                                    <button onClick={() => {
+                                        const security = document.getElementById("securityType").value;
+                                        const amount = parseFloat(document.getElementById("securityAmount").value);
+                                        handleSecurityTrade(security, amount);
+                                    }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Trade Security</button>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {/* Footer */}
+                    <footer className="bg-blue-800 text-white p-4 text-center">
+                        <p>© 2025 PFTISS. All rights reserved.</p>
+                        <p>Contact: <a href="mailto:support@pftiss.com" className="underline">support@pftiss.com</a> | +234 123 456 7890</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

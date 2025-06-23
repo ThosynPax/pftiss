@@ -159,46 +159,63 @@
     <section id="dashboard" class="py-16">
         <div class="container mx-auto px-4 flex flex-col md:flex-row">
             <!-- Sidebar -->
-<div class="sidebar bg-blue-800 text-white w-full md:w-64 p-4 rounded-lg mb-4 md:mb-0" id="sidebar">
-    <ul class="space-y-2">
-        <li><a href="#wallet" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-wallet"></i>
-            <span class="sidebar-text" data-translate="wallet">Wallet</span>
-        </a></li>
-        <li><a href="#payments" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="payments">Payments</span>
-        </a></li>
-        <li><a href="#govservices" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="govservices">Government Services</span>
-        </a></li>
-        <li><a href="#trade" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="trade">MSME Enablement</span>
-        </a></li>
-        <li><a href="#defi" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="defi">DeFi Hub</span>
-        </a></li>
-        <li><a href="#compliance" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="compliance">Compliance</span>
-        </a></li>
-        <li><a href="#logistics" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="logistics">Logistics</span>
-        </a></li>
-        <li><a href="#reserves" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="reserves">Reserves</span>
-        </a></li>
-        <li><a href="#pension" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-            <i class="fas fa-exchange-alt"></i>
-            <span class="sidebar-text" data-translate="pension">Pension</span>
-        </a></li>
-    </ul>
-</div>
+        <div class="sidebar bg-blue-800 text-white w-full md:w-64 p-4 rounded-lg mb-4 md:mb-0" id="sidebar">
+            <ul class="space-y-2">
+                <li><a href="#wallet" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-wallet"></i>
+                    <span class="sidebar-text" data-translate="wallet">Wallet</span>
+                </a></li>
+                <li><a href="#payments" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="payments">Payments</span>
+                </a></li>
+                <li><a href="#govservices" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="govservices">Government Services</span>
+                </a></li>
+                <li><a href="#trade" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="trade">MSME Enablement</span>
+                </a></li>
+                <li><a href="#defi" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="defi">DeFi Hub</span>
+                </a></li>
+                <li><a href="#compliance" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="compliance">Compliance</span>
+                </a></li>
+                <li><a href="#logistics" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="logistics">Logistics</span>
+                </a></li>
+                <li><a href="#reserves" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="reserves">Reserves</span>
+                </a></li>
+                <li><a href="#pension" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="pension">Pension</span>
+                </a></li>
+                <!-- New CBDC Sections -->
+                <li><a href="#cbdc-remittance" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="cbdcRemittance">CBDC Remittance</span>
+                </a></li>
+                <li><a href="#cbdc-tbills" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt""></i>
+                    <span class="sidebar-text" data-translate="cbdcTbills">Tokenized T-Bills</span>
+                </a></li>
+                <li><a href="#cbdc-fx" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="cbdcFx">FX Settlement</span>
+                </a></li>
+                <li><a href="#cbdc-securities" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span class="sidebar-text" data-translate="cbdcSecurities">Tokenized Securities</span>
+                </a></li>
+            </ul>
+        </div>
             <!-- Main Content -->
             <div class="flex-1 md:ml-4">
                 <h2 class="text-3xl font-bold mb-8" data-translate="globalDashboard">PFTISS Global Dashboard</h2>
@@ -266,6 +283,50 @@
             </div>
         </div>
     </section>
+
+    <section id="dashboard" class="py-16">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row">
+            
+            <!-- Main Content -->
+            <div class="flex-1 md:ml-4">
+                <h2 class="text-3xl font-bold mb-8" data-translate="globalDashboard">Wholesale and Retail CBDC </h2>
+                
+                <!-- Grid Layout for CBDC Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Existing cards remain here -->
+                    
+                    <!-- CBDC Remittance Card -->
+                    <div id="cbdc-remittance" class="card bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-2" data-translate="cbdcRemittanceTitle">CBDC Cross-Border Remittance</h3>
+                        <p class="text-gray-600" data-translate="cbdcRemittanceDesc">Send/receive remittances using eNaira and wholesale CBDC settlement.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('cbdc-remittance')">Send Remittance</button>
+                    </div>
+                    
+                    <!-- Tokenized T-Bills Card -->
+                    <div id="cbdc-tbills" class="card bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-2" data-translate="cbdcTbillsTitle">Tokenized T-Bills & Bonds</h3>
+                        <p class="text-gray-600" data-translate="cbdcTbillsDesc">Purchase and manage tokenized government securities.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('cbdc-tbills')">Invest Now</button>
+                    </div>
+                    
+                    <!-- FX Settlement Card -->
+                    <div id="cbdc-fx" class="card bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-2" data-translate="cbdcFxTitle">FX Settlement</h3>
+                        <p class="text-gray-600" data-translate="cbdcFxDesc">On-chain FX trading with real-time settlement.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('cbdc-fx')">Trade FX</button>
+                    </div>
+                    
+                    <!-- Tokenized Securities Card -->
+                    <div id="cbdc-securities" class="card bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-2" data-translate="cbdcSecuritiesTitle">Tokenized Securities</h3>
+                        <p class="text-gray-600" data-translate="cbdcSecuritiesDesc">Trade tokenized securities with instant DvP settlement.</p>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('cbdc-securities')">Trade Securities</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Trade & Supply Chain Facilitation -->
     <section id="trade" class="py-16 bg-gray-200">
@@ -444,6 +505,7 @@ const translations = {
         reserves: "Reserves",
         pension: "Pension",
         
+        
         // Dashboard Cards
         globalDashboard: "PFTISS Global Dashboard",
         walletTitle: "Multi-Currency Wallet",
@@ -453,7 +515,7 @@ const translations = {
         goldToken: "Gold Token",
         cocoaToken: "Cocoa Token",
         tokenizedUSD: "Tokenized USD",
-        carbonCredits: "Carbon Credits",
+        carbonCredits: "tokenized deposits",
         manageWallet: "Manage Wallet",
         paymentsTitle: "Multi-Payment Rail",
         paymentsDesc: "Pay with fiat, CBDC, stablecoin, crypto, tokenized assets, or commodities.",
@@ -895,11 +957,32 @@ function changeLanguage() {
     showLanguageNotification(`${langName} activated`);
 }
 
-// Extend your translations object:
-translations.en.reserveComposition = "Reserve Composition";
-translations.fr.reserveComposition = "Composition des réserves";
-translations.ar.reserveComposition = "تكوين الاحتياطي";
-translations.sw.reserveComposition = "Muundo wa Akiba";
+    // Extend your translations object:
+    translations.en.reserveComposition = "Reserve Composition";
+    translations.fr.reserveComposition = "Composition des réserves";
+    translations.ar.reserveComposition = "تكوين الاحتياطي";
+    translations.sw.reserveComposition = "Muundo wa Akiba";
+
+    translations.en.cbdcRemittance = "CBDC Remittance";
+    translations.en.cbdcTbills = "Tokenized T-Bills";
+    translations.en.cbdcFx = "FX Settlement";
+    translations.en.cbdcSecurities = "Tokenized Securities";
+
+    translations.en.cbdcRemittanceTitle = "CBDC Cross-Border Remittance";
+    translations.en.cbdcRemittanceDesc = "Send/receive remittances using eNaira and wholesale CBDC settlement";
+    translations.en.cbdcTbillsTitle = "Tokenized T-Bills & Bonds";
+    translations.en.cbdcTbillsDesc = "Purchase and manage tokenized government securities";
+    translations.en.cbdcFx = "FX Settlement";
+    translations.en.cbdcFxTitle = "FX Settlement";
+    translations.en.cbdcFxDesc = "On-chain FX trading with real-time settlement";
+    translations.en.cbdcSecurities = "Tokenized Securities";
+    translations.en.cbdcSecuritiesTitle = "Tokenized Securities";
+    translations.en.cbdcSecuritiesDesc = "Trade tokenized securities with instant DvP settlement";
+
+    translations.fr.cbdcRemittance = "Transfert CBDC";
+    translations.fr.cbdcTbills = "Bons du Trésor Tokenisés";
+    translations.fr.cbdcFx = "Règlement FX";
+    translations.fr.cbdcSecurities = "Titres Tokenisés";
 
         const mockData = {
             user: {
@@ -916,7 +999,8 @@ translations.sw.reserveComposition = "Muundo wa Akiba";
                     { currency: "Gold Token", amount: 0.5, symbol: "oz" },
                     { currency: "Cocoa Token", amount: 100, symbol: "kg" },
                     { currency: "Tokenized USD", amount: 500, symbol: "$" },
-                    { currency: "Carbon Credits", amount: 10, symbol: "tCO2e" }
+                    { currency: "Tokenized Deposits", amount: 10, symbol: "tCO2e" },
+                    { currency: "Tokenized Assets", amount: 250000, symbol: "₦"}
                 ]
             },
             transactions: [
@@ -1131,7 +1215,7 @@ translations.sw.reserveComposition = "Muundo wa Akiba";
                 },
                 wallet: {
                     title: 'Manage Wallet',
-                    description: 'View and manage your multi-currency wallet, including tokenized assets, commodities, and carbon credits.',
+                    description: 'View and manage your multi-currency wallet, including tokenized assets, commodities, and tokenized deposits.',
                     menu: `
                         <div class="flex space-x-4 mb-4">
                             <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('sendMoney')">Send Money</button>
@@ -1196,6 +1280,133 @@ translations.sw.reserveComposition = "Muundo wa Akiba";
                         </div>
                     `
                 },
+                            'cbdc-remittance': {
+                title: 'CBDC Cross-Border Remittance',
+                description: 'Send/receive remittances using eNaira and wholesale CBDC settlement.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700">From</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>eNaira Wallet</option>
+                                <option>USDw Wallet</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Amount</label>
+                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Recipient Country</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>Ghana</option>
+                                <option>South Africa</option>
+                                <option>Kenya</option>
+                                <option>United Arab Emirates</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Recipient Wallet Address</label>
+                            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2">
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockCbdcRemittance()">Send Remittance</button>
+                    </div>
+                `
+            },
+            
+            // Tokenized T-Bills Modal
+            'cbdc-tbills': {
+                title: 'Tokenized Treasury Bills & Bonds',
+                description: 'Purchase and manage tokenized government securities.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700">Security Type</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>90-Day T-Bill (5% yield)</option>
+                                <option>1-Year Bond (7% yield)</option>
+                                <option>5-Year Bond (9% yield)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Amount (eNaira)</label>
+                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Payment Method</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>eNaira Wallet</option>
+                                <option>Bank Transfer</option>
+                            </select>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockTbillsPurchase()">Purchase</button>
+                    </div>
+                `
+            },
+            
+            // FX Settlement Modal
+            'cbdc-fx': {
+                title: 'FX Settlement',
+                description: 'On-chain FX trading with real-time settlement.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700">Currency Pair</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>USDw/NGNw</option>
+                                <option>EURw/NGNw</option>
+                                <option>GBPw/NGNw</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Amount</label>
+                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Settlement Method</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>Instant (On-chain)</option>
+                                <option>Next Business Day</option>
+                            </select>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockFxTrade()">Execute Trade</button>
+                    </div>
+                `
+            },
+            
+            // Tokenized Securities Modal
+            'cbdc-securities': {
+                title: 'Tokenized Securities Settlement',
+                description: 'Trade tokenized securities with instant DvP settlement.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700">Security Type</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>Corporate Bonds</option>
+                                <option>Commercial Paper</option>
+                                <option>Equity Tokens</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Action</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>Buy</option>
+                                <option>Sell</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Amount</label>
+                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Price (eNaira)</label>
+                            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockSecuritiesTrade()">Execute Trade</button>
+                    </div>
+                `
+            },
                 exchange: {
                     title: 'Exchange Currencies',
                     description: 'Convert between different currencies and commodities.',
@@ -2264,6 +2475,30 @@ function showLanguageNotification(message) {
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+        // Mock CBDC Remittance
+        function mockCbdcRemittance() {
+            alert('CBDC remittance submitted! In a real system, this would process cross-border payment.');
+            closeModal();
+        }
+
+        // Mock T-Bills Purchase
+        function mockTbillsPurchase() {
+            alert('Tokenized T-Bill purchase completed! In a real system, this would issue tokenized securities.');
+            closeModal();
+        }
+
+        // Mock FX Trade
+        function mockFxTrade() {
+            alert('FX trade executed with instant settlement! In a real system, this would settle on-chain.');
+            closeModal();
+        }
+
+        // Mock Securities Trade
+        function mockSecuritiesTrade() {
+            alert('Tokenized securities trade completed with DvP! In a real system, this would settle atomically.');
+            closeModal();
         }
 
         // Initialize tooltips
