@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFRINET - PFTISS Transaction Portal</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    .transaction-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .transaction-table th, .transaction-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    .transaction-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <!-- Navigation Bar -->
+  <nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="w-40 h-auto">
+        <img src="logo.png" class="w-full h-auto" alt="PFTISS Logo" />
+      </div>
+      <div class="hidden md:flex space-x-4 items-center">
+        <a href="index.html" class="text-gray-600 hover:text-blue-600">Home</a>
+        <a href="index.html#dashboard" class="text-gray-600 hover:text-blue-600">Dashboard</a>
+        <a href="index.html#trade" class="text-gray-600 hover:text-blue-600">Trade</a>
+        <a href="index.html#compliance" class="text-gray-600 hover:text-blue-600">Compliance</a>
+        <a href="afrinet.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Afrinet</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center text-blue-800 mb-6">AFRINET - PFTISS Transaction Portal</h1>
+    
+    <div id="errorMessage" class="bg-red-100 text-red-700 p-4 mb-4 rounded hidden"></div>
+    <div id="walletStatus" class="text-green-700 mb-4 hidden"></div>
+
+    <!-- Transaction Form -->
+    <div class="card bg-white p-6 rounded-lg shadow-md mb-6">
+      <h2 class="text-xl font-semibold mb-4">Create Transaction</h2>
+      <form id="transactionForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            id="txId"
+            placeholder="Transaction ID"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            id="sender"
+            placeholder="Sender"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            id="receiver"
+            placeholder="Receiver"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="number"
+            id="amount"
+            placeholder="Amount"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <select
+            id="currency"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="eNaira">eNaira</option>
+            <option value="USDT">USDT</option>
+            <option value="ETH">ETH</option>
+            <option value="ZAR">ZAR</option>
+            <option value="KES">KES</option>
+          </select>
+          <input
+            type="text"
+            id="isoMsg"
+            placeholder="ISO 20022 Message (e.g., pacs.008.001.10)"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-600 text-white p-3 rounded hover:bg-blue-700 w-full"
+        >
+          Submit Transaction
+        </button>
+      </form>
+    </div>
+
+    <!-- FX Swap Form -->
+    <div class="card bg-white p-6 rounded-lg shadow-md mb-6">
+      <h2 class="text-xl font-semibold mb-4">FX Swap</h2>
+      <form id="fxForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input
+            type="text"
+            id="fxId"
+            placeholder="FX Swap ID"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            id="fxSender"
+            placeholder="Sender"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            id="fxReceiver"
+            placeholder="Receiver"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <select
+            id="sourceCurrency"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="eNaira">eNaira</option>
+            <option value="USDT">USDT</option>
+            <option value="ZAR">ZAR</option>
+            <option value="KES">KES</option>
+          </select>
+          <select
+            id="targetCurrency"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="eNaira">eNaira</option>
+          </select>
+          <input
+            type="number"
+            id="fxAmount"
+            placeholder="Amount"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="number"
+            id="fxRate"
+            placeholder="Exchange Rate"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          <input
+            type="text"
+            id="fxIsoMsg"
+            placeholder="ISO 20022 Message"
+            class="border p-3 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          class="bg-green-600 text-white p-3 rounded hover:bg-green-700 w-full"
+        >
+          Execute FX Swap
+        </button>
+      </form>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Transaction History</h2>
+      <button id="refreshBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4">
+        <i class="fas fa-sync-alt mr-2"></i>Refresh
+      </button>
+      <div class="overflow-x-auto">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Sender</th>
+              <th>Receiver</th>
+              <th>Amount</th>
+              <th>Currency</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="txHistory">
+            <!-- Transactions will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mock data for demonstration
+    const mockTransactions = [
+      {
+        id: 'TX-001',
+        type: 'Payment',
+        sender: 'Bank A (Nigeria)',
+        receiver: 'Bank B (Ghana)',
+        amount: '5000',
+        currency: 'eNaira',
+        status: 'Completed'
+      },
+      {
+        id: 'FX-001',
+        type: 'FX Swap',
+        sender: 'Bank C (Kenya)',
+        receiver: 'Bank D (South Africa)',
+        amount: '10000',
+        currency: 'ZAR/USD',
+        status: 'Pending'
+      },
+      {
+        id: 'TX-002',
+        type: 'Payment',
+        sender: 'Merchant X',
+        receiver: 'Supplier Y',
+        amount: '2500',
+        currency: 'USDT',
+        status: 'Completed'
+      }
+    ];
+
+    // Connect to wallet (simulated)
+    function connectWallet() {
+      document.getElementById('walletStatus').classList.remove('hidden');
+      document.getElementById('walletStatus').textContent = 'Connected: Wallet Address (0x123...abc)';
+    }
+
+    // Load transaction history
+    function loadTransactions() {
+      const tbody = document.getElementById('txHistory');
+      tbody.innerHTML = '';
+      
+      mockTransactions.forEach(tx => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${tx.id}</td>
+          <td>${tx.type}</td>
+          <td>${tx.sender}</td>
+          <td>${tx.receiver}</td>
+          <td>${tx.amount}</td>
+          <td>${tx.currency}</td>
+          <td><span class="${tx.status === 'Completed' ? 'text-green-600' : 'text-yellow-600'}">${tx.status}</span></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Handle transaction submission
+    document.getElementById('transactionForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const txData = {
+        id: document.getElementById('txId').value,
+        sender: document.getElementById('sender').value,
+        receiver: document.getElementById('receiver').value,
+        amount: document.getElementById('amount').value,
+        currency: document.getElementById('currency').value,
+        isoMsg: document.getElementById('isoMsg').value || 'pacs.008.001.10'
+      };
+      
+      // In a real implementation, this would call an API
+      mockTransactions.unshift({
+        id: txData.id,
+        type: 'Payment',
+        sender: txData.sender,
+        receiver: txData.receiver,
+        amount: txData.amount,
+        currency: txData.currency,
+        status: 'Completed'
+      });
+      
+      alert('Transaction submitted successfully!\n' + JSON.stringify(txData, null, 2));
+      this.reset();
+      loadTransactions();
+    });
+
+    // Handle FX swap submission
+    document.getElementById('fxForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const fxData = {
+        id: document.getElementById('fxId').value,
+        sender: document.getElementById('fxSender').value,
+        receiver: document.getElementById('fxReceiver').value,
+        sourceCurrency: document.getElementById('sourceCurrency').value,
+        targetCurrency: document.getElementById('targetCurrency').value,
+        amount: document.getElementById('fxAmount').value,
+        rate: document.getElementById('fxRate').value,
+        isoMsg: document.getElementById('fxIsoMsg').value || 'pacs.009.001.10'
+      };
+      
+      // In a real implementation, this would call an API
+      mockTransactions.unshift({
+        id: fxData.id,
+        type: 'FX Swap',
+        sender: fxData.sender,
+        receiver: fxData.receiver,
+        amount: `${fxData.amount} (${fxData.sourceCurrency}→${fxData.targetCurrency})`,
+        currency: `Rate: ${fxData.rate}`,
+        status: 'Completed'
+      });
+      
+      alert('FX Swap executed successfully!\n' + JSON.stringify(fxData, null, 2));
+      this.reset();
+      loadTransactions();
+    });
+
+    // Refresh button
+    document.getElementById('refreshBtn').addEventListener('click', loadTransactions);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      connectWallet();
+      loadTransactions();
+    });
+  </script>
+</body>
+</html>

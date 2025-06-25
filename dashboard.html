@@ -124,6 +124,7 @@
         <a href="#dashboard" class="block text-gray-600 py-2 hover:text-blue-600" data-translate="dashboard">Dashboard</a>
         <a href="#trade" class="block text-gray-600 py-2 hover:text-blue-600" data-translate="trade">Trade</a>
         <a href="#compliance" class="block text-gray-600 py-2 hover:text-blue-600"  data-translate="compliance">Compliance</a>
+        <a href="afrinet.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="afrinet">AFRINET</a>
         <select id="mobile-language-selector" class="w-full border border-gray-300 rounded px-2 py-1 mt-2 text-gray-600" onchange="changeLanguage()">
           <option value="en">English</option>
           <option value="fr">Français</option>
@@ -136,6 +137,7 @@
         <a href="#dashboard" class="text-gray-600 hover:text-blue-600" data-translate="dashboard">Dashboard</a>
         <a href="#trade" class="text-gray-600 hover:text-blue-600" data-translate="trade">Trade</a>
         <a href="#compliance" class="text-gray-600 hover:text-blue-600" data-translate="compliance">Compliance</a>
+         <a href="afrinet.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="afrinet">AFRINET</a>
         <select id="language-selector" class="language-selector border border-gray-300 rounded px-2 py-1 text-gray-600" onchange="changeLanguage()">
           <option value="en">English</option>
           <option value="fr">Français</option>
@@ -214,6 +216,10 @@
                     <i class="fas fa-exchange-alt"></i>
                     <span class="sidebar-text" data-translate="cbdcSecurities">Tokenized Securities</span>
                 </a></li>
+                <li><a href="#dispute" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
+                    <i class="fas fa-shield-alt"></i>
+                    <span class="sidebar-text" data-translate="dispute">Dispute Resolution</span>
+                </a></li>
             </ul>
         </div>
             <!-- Main Content -->
@@ -258,8 +264,25 @@
                     <!-- MSME Enablement -->
                     <div id="trade" class="card bg-white rounded-lg shadow-md p-6">
                         <h3 class="text-xl font-semibold mb-2" data-translate="msmeTitle">MSME Trade & Enablement</h3>
-                        <p class="text-gray-600" data-translate="msmeDesc">Access financing, trade tools, and capacity building.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="getStarted" onclick="showModal('msme')">Get Started</button>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-blue-50 rounded-lg">
+                                <h4 class="font-semibold mb-2">Trade Financing</h4>
+                                <p class="text-sm text-gray-600 mb-2">Access working capital for your business operations</p>
+                                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full" onclick="showModal('msme-finance')">Apply Now</button>
+                            </div>
+                            
+                            <div class="p-4 bg-green-50 rounded-lg">
+                                <h4 class="font-semibold mb-2">Market Access</h4>
+                                <p class="text-sm text-gray-600 mb-2">Connect with buyers across Africa</p>
+                                <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full" onclick="showModal('msme-market')">Explore Markets</button>
+                            </div>
+                            
+                            <div class="p-4 bg-purple-50 rounded-lg">
+                                <h4 class="font-semibold mb-2">Capacity Building</h4>
+                                <p class="text-sm text-gray-600 mb-2">Training and business development resources</p>
+                                <button class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full" onclick="showModal('msme-training')">View Programs</button>
+                            </div>
+                        </div>
                     </div>
                     <!-- Logistics Tracking -->
                     <div id="logistics" class="card bg-white rounded-lg shadow-md p-6">
@@ -267,11 +290,15 @@
                         <p class="text-gray-600" data-translate="logisticsDesc">Track global shipments with IoT and AI.</p>
                         <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="trackNow" onclick="showModal('logistics')">Track Now</button>
                     </div>
-                    <!-- Programmable Monetary Policy -->
+
                     <div id="monetary" class="card bg-white rounded-lg shadow-md p-6">
                         <h3 class="text-xl font-semibold mb-2" data-translate="monetaryTitle">Programmable Monetary Policy</h3>
-                        <p class="text-gray-600" data-translate="monetaryDesc">Manage inflation controls and MPR via smart contracts.</p>
-                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="configurePolicy" onclick="showModal('monetary')">Configure Policy</button>
+                        <p class="text-gray-600 mb-4" data-translate="monetaryDesc">Configure and manage monetary policy parameters via smart contracts.</p>
+                        <div class="space-y-4">
+                            <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary-rates')">Interest Rate Policy</button>
+                            <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary-reserves')">Reserve Requirements</button>
+                            <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary-liquidity')">Liquidity Management</button>
+                        </div>
                     </div>
                     <!-- Pension Module -->
                     <div id="pension" class="card bg-white rounded-lg shadow-md p-6">
@@ -404,6 +431,20 @@
                     <h3 class="text-xl font-semibold mb-2" data-translate="daoTitle">DAO Governance</h3>
                     <p class="text-gray-600 mb-4" data-translate="daoDesc">Vote on protocol upgrades globally.</p>
                     <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="participate" onclick="showModal('dao')">Participate</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dispute" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="card bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold mb-2" data-translate="disputeTitle">Dispute Resolution & Security</h3>
+                <p class="text-gray-600 mb-4" data-translate="disputeDesc">Secure resolution of trade disputes and platform security monitoring.</p>
+                <div class="space-y-4">
+                    <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('dispute-new')">File New Dispute</button>
+                    <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('dispute-track')">Track Existing Case</button>
+                    <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('security-report')">Report Security Issue</button>
                 </div>
             </div>
         </div>
@@ -673,6 +714,7 @@ const translations = {
         crossBorderTax: "Taxe transfrontalière",
         crossBorderDesc: "Calcul automatique des taxes intra-africaines.",
         manageTaxes: "Gérer les taxes",
+        
         
         // Compliance Section
         complianceTitle: "Conformité et gouvernance",
@@ -984,6 +1026,38 @@ function changeLanguage() {
     translations.fr.cbdcFx = "Règlement FX";
     translations.fr.cbdcSecurities = "Titres Tokenisés";
 
+    // English
+    translations.en.dispute = "Dispute Resolution";
+    translations.en.disputeTitle = "Dispute Resolution & Security";
+    translations.en.disputeDesc = "Secure resolution of trade disputes and platform security monitoring";
+    translations.en.monetary = "Monetary Policy";
+    translations.en.monetaryTitle = "Programmable Monetary Policy";
+    translations.en.monetaryDesc = "Configure and manage monetary policy parameters via smart contracts";
+
+    // French
+    translations.fr.dispute = "Règlement des litiges";
+    translations.fr.disputeTitle = "Règlement des litiges et sécurité";
+    translations.fr.disputeDesc = "Résolution sécurisée des litiges commerciaux et surveillance de la sécurité de la plateforme";
+    translations.fr.monetary = "Politique monétaire";
+    translations.fr.monetaryTitle = "Politique monétaire programmable";
+    translations.fr.monetaryDesc = "Configurer et gérer les paramètres de politique monétaire via des contrats intelligents";
+
+    // Arabic
+    translations.ar.dispute = "تسوية المنازعات";
+    translations.ar.disputeTitle = "تسوية المنازعات والأمن";
+    translations.ar.disputeDesc = "حل آمن للنزاعات التجارية ومراقبة أمن المنصة";
+    translations.ar.monetary = "السياسة النقدية";
+    translations.ar.monetaryTitle = "السياسة النقدية القابلة للبرمجة";
+    translations.ar.monetaryDesc = "تكوين وإدارة معايير السياسة النقدية عبر العقود الذكية";
+
+    // Swahili
+    translations.sw.dispute = "Uamuzi wa Migogoro";
+    translations.sw.disputeTitle = "Uamuzi wa Migogoro na Usalama";
+    translations.sw.disputeDesc = "Uamuzi salama wa migogoro ya biashara na ufuatiliaji wa usalama wa jukwaa";
+    translations.sw.monetary = "Sera ya Fedha";
+    translations.sw.monetaryTitle = "Sera ya Fedha Inayoweza Kurekebishwa";
+    translations.sw.monetaryDesc = "Sanidi na udhibiti vigezo vya sera ya fedha kupitia mikataba smart";
+
         const mockData = {
             user: {
                 name: "John Doe",
@@ -996,7 +1070,6 @@ function changeLanguage() {
                 balances: [
                     { currency: "PFTISS Stablecoin", amount: 1000, symbol: "PFT" },
                     { currency: "eNaira", amount: 50000, symbol: "₦" },
-                    { currency: "Gold Token", amount: 0.5, symbol: "oz" },
                     { currency: "Cocoa Token", amount: 100, symbol: "kg" },
                     { currency: "Tokenized USD", amount: 500, symbol: "$" },
                     { currency: "Tokenized Deposits", amount: 10, symbol: "tCO2e" },
@@ -1344,6 +1417,7 @@ function changeLanguage() {
                 `
             },
             
+            
             // FX Settlement Modal
             'cbdc-fx': {
                 title: 'FX Settlement',
@@ -1373,7 +1447,87 @@ function changeLanguage() {
                     </div>
                 `
             },
-            
+            'dispute-new': {
+    title: 'File New Dispute',
+    description: 'Initiate a formal dispute resolution process for trade or payment issues.',
+    form: `
+        <div class="space-y-4">
+            <div>
+                <label class="block text-gray-700">Dispute Type</label>
+                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                    <option>Payment Dispute</option>
+                    <option>Goods/Service Not Received</option>
+                    <option>Quality Dispute</option>
+                    <option>Contract Breach</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700">Transaction ID</label>
+                <input type="text" class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-gray-700">Amount in Dispute</label>
+                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-gray-700">Description</label>
+                <textarea class="w-full border border-gray-300 rounded px-3 py-2" rows="3"></textarea>
+            </div>
+            <div>
+                <label class="block text-gray-700">Evidence Upload</label>
+                <input type="file" class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockFileDispute()">Submit Dispute</button>
+        </div>
+    `
+},
+'dispute-track': {
+    title: 'Track Dispute Case',
+    description: 'Check the status of your ongoing dispute resolution cases.',
+    form: `
+        <div class="space-y-4">
+            <div>
+                <label class="block text-gray-700">Case ID</label>
+                <input type="text" class="w-full border border-gray-300 rounded px-3 py-2">
+            </div>
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockTrackDispute()">Check Status</button>
+            <div id="disputeStatus" class="hidden p-4 bg-gray-100 rounded mt-4">
+                <h4 class="font-semibold">Case #DIS-2023-0456</h4>
+                <p class="mt-2">Status: Under Mediation</p>
+                <p>Last Update: 2023-11-15</p>
+                <p>Next Step: Mediator decision expected by 2023-11-20</p>
+            </div>
+        </div>
+    `
+},
+
+            'security-report': {
+                title: 'Report Security Issue',
+                description: 'Report suspicious activity or security vulnerabilities.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700">Issue Type</label>
+                            <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>Suspicious Transaction</option>
+                                <option>Account Compromise</option>
+                                <option>Platform Vulnerability</option>
+                                <option>Phishing Attempt</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Description</label>
+                            <textarea class="w-full border border-gray-300 rounded px-3 py-2" rows="3"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Evidence (Screenshots, etc.)</label>
+                            <input type="file" class="w-full border border-gray-300 rounded px-3 py-2" multiple>
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockSecurityReport()">Submit Report</button>
+                    </div>
+                `
+            },
+
             // Tokenized Securities Modal
             'cbdc-securities': {
                 title: 'Tokenized Securities Settlement',
@@ -1580,16 +1734,8 @@ function changeLanguage() {
                         </div>
                     `
                 },
-                monetary: {
-                    title: 'Programmable Monetary Policy',
-                    description: 'Configure central bank monetary policies including inflation controls and MPR.',
-                    menu: `
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockMonetaryPolicy('Inflation Controls')">Inflation Controls</button>
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockMonetaryPolicy('MPR Settings')">MPR Settings</button>
-                        </div>
-                    `
-                },
+
+                
                 pension: {
                     title: 'Pension Module',
                     description: 'Enroll in micro-pensions or DeFi-integrated retirement plans globally.',
@@ -1666,6 +1812,7 @@ function changeLanguage() {
                                     <option>Government Bonds</option>
                                     <option>Corporate Bonds</option>
                                     <option>Equity Crowdfunding</option>
+                                    <option>Treasuy Bills</option>
                                     <option>Infrastructure Projects</option>
                                 </select>
                             </div>
@@ -1725,6 +1872,212 @@ function changeLanguage() {
                         </div>
                     `
                 },
+                'msme-finance': {
+                    title: 'MSME Trade Financing',
+                    description: 'Access working capital and trade finance solutions for your business.',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">Business Type</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Manufacturer</option>
+                                    <option>Exporter</option>
+                                    <option>Distributor</option>
+                                    <option>Service Provider</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Requested Amount (₦)</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Purpose</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Inventory Purchase</option>
+                                    <option>Equipment Financing</option>
+                                    <option>Working Capital</option>
+                                    <option>Export Financing</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Business Registration Documents</label>
+                                <input type="file" class="w-full border border-gray-300 rounded px-3 py-2">
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockMsmeFinance()">Submit Application</button>
+                        </div>
+                    `
+                },
+                'msme-market': {
+                    title: 'Market Access Portal',
+                    description: 'Connect with buyers and sellers across African markets.',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">I am looking for</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Buyers</option>
+                                    <option>Suppliers</option>
+                                    <option>Distributors</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Product Category</label>
+                                <select class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Agricultural Products</option>
+                                    <option>Manufactured Goods</option>
+                                    <option>Services</option>
+                                    <option>Raw Materials</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Target Markets</label>
+                                <select multiple class="w-full border border-gray-300 rounded px-3 py-2">
+                                    <option>Nigeria</option>
+                                    <option>Ghana</option>
+                                    <option>South Africa</option>
+                                    <option>Kenya</option>
+                                </select>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockMsmeMarket()">Search Partners</button>
+                        </div>
+                    `
+            },
+            'msme-training': {
+                title: 'Capacity Building Programs',
+                description: 'Enhance your business skills with our training programs.',
+                form: `
+                    <div class="space-y-4">
+                        <div class="border-b pb-2">
+                            <h4 class="font-semibold">Upcoming Programs</h4>
+                            <ul class="mt-2 space-y-2">
+                                <li class="p-2 bg-gray-50 rounded">
+                                    <p class="font-medium">Digital Marketing for SMEs</p>
+                                    <p class="text-sm">Nov 20-22, 2023 | Online</p>
+                                    <button class="mt-1 text-blue-600 text-sm" onclick="mockMsmeRegister('Digital Marketing')">Register</button>
+                                </li>
+                                <li class="p-2 bg-gray-50 rounded">
+                                    <p class="font-medium">Export Documentation</p>
+                                    <p class="text-sm">Dec 5-7, 2023 | Lagos</p>
+                                    <button class="mt-1 text-blue-600 text-sm" onclick="mockMsmeRegister('Export Documentation')">Register</button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Request Custom Training</h4>
+                            <textarea class="w-full border border-gray-300 rounded px-3 py-2 mt-2" placeholder="Describe your training needs"></textarea>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-2" onclick="mockMsmeTrainingRequest()">Submit Request</button>
+                        </div>
+                    </div>
+                `
+            },
+
+            'monetary-rates': {
+                title: 'Interest Rate Policy',
+                description: 'Configure monetary policy rates and parameters.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label for="mprSlider" class="block text-gray-700">MPR (Monetary Policy Rate)</label>
+                            <input type="range" min="0" max="30" value="14" class="w-full" id="mprSlider" aria-labelledby="mprValue">
+                            <div class="flex justify-between">
+                                <span>0%</span>
+                                <span id="mprValue">14%</span>
+                                <span>30%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="corridorSlider" class="block text-gray-700">Corridor Width (±)</label>
+                            <input type="range" min="1" max="10" value="5" class="w-full" id="corridorSlider" aria-labelledby="corridorValue">
+                            <div class="flex justify-between">
+                                <span>1%</span>
+                                <span id="corridorValue">5%</span>
+                                <span>10%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="ratesImplementationDate" class="block text-gray-700">Implementation Date</label>
+                            <input type="date" id="ratesImplementationDate" class="w-full border border-gray-300 rounded px-3 py-2" value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockUpdateMPR()">Update Policy Rates</button>
+                    </div>
+                `,
+                scripts: function() {
+                    document.getElementById('mprSlider')?.addEventListener('input', function() {
+                        document.getElementById('mprValue').textContent = this.value + '%';
+                    });
+                    document.getElementById('corridorSlider')?.addEventListener('input', function() {
+                        document.getElementById('corridorValue').textContent = this.value + '%';
+                    });
+                }
+            },
+            'monetary-reserves': {
+                title: 'Reserve Requirements',
+                description: 'Manage commercial bank reserve requirements.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label for="crrSlider" class="block text-gray-700">CRR (Cash Reserve Ratio)</label>
+                            <input type="range" min="1" max="50" value="27.5" step="0.5" class="w-full" id="crrSlider" aria-labelledby="crrValue">
+                            <div class="flex justify-between">
+                                <span>1%</span>
+                                <span id="crrValue">27.5%</span>
+                                <span>50%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="ldrSlider" class="block text-gray-700">LDR (Loan-to-Deposit Ratio)</label>
+                            <input type="range" min="1" max="100" value="65" class="w-full" id="ldrSlider" aria-labelledby="ldrValue">
+                            <div class="flex justify-between">
+                                <span>1%</span>
+                                <span id="ldrValue">65%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="reservesImplementationDate" class="block text-gray-700">Implementation Date</label>
+                            <input type="date" id="reservesImplementationDate" class="w-full border border-gray-300 rounded px-3 py-2" value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockUpdateReserves()">Update Reserve Policy</button>
+                    </div>
+                `,
+                scripts: function() {
+                    document.getElementById('crrSlider')?.addEventListener('input', function() {
+                        document.getElementById('crrValue').textContent = this.value + '%';
+                    });
+                    document.getElementById('ldrSlider')?.addEventListener('input', function() {
+                        document.getElementById('ldrValue').textContent = this.value + '%';
+                    });
+                }
+            },
+            'monetary-liquidity': {
+                title: 'Liquidity Management',
+                description: 'Manage system liquidity through open market operations.',
+                form: `
+                    <div class="space-y-4">
+                        <div>
+                            <label for="operationType" class="block text-gray-700">Operation Type</label>
+                            <select id="operationType" class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option>OMO (Open Market Operation)</option>
+                                <option>Standing Lending Facility</option>
+                                <option>Standing Deposit Facility</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="operationAmount" class="block text-gray-700">Amount (₦ billion)</label>
+                            <input type="number" id="operationAmount" class="w-full border border-gray-300 rounded px-3 py-2" value="100">
+                        </div>
+                        <div>
+                            <label for="operationTenor" class="block text-gray-700">Tenor (days)</label>
+                            <input type="number" id="operationTenor" class="w-full border border-gray-300 rounded px-3 py-2" value="7">
+                        </div>
+                        <div>
+                            <label for="operationRate" class="block text-gray-700">Rate (%)</label>
+                            <input type="number" id="operationRate" class="w-full border border-gray-300 rounded px-3 py-2" value="12.5" step="0.1">
+                        </div>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockLiquidityOp()">Execute Operation</button>
+                    </div>
+                `
+            },       
                 portableid: {
                     title: 'Portable Digital ID',
                     description: 'Cross-border identity verification for seamless trade.',
@@ -2278,6 +2631,20 @@ function showLanguageNotification(message) {
             closeModal();
         }
 
+        function mockFileDispute() {
+            alert('Dispute filed successfully! Case ID: DIS-2023-0456');
+            closeModal();
+        }
+
+        function mockTrackDispute() {
+            document.getElementById('disputeStatus').classList.remove('hidden');
+        }
+
+        function mockSecurityReport() {
+            alert('Security report submitted. Our team will investigate immediately.');
+            closeModal();
+        }
+
         function mockSupplyChainFinance() {
             alert('Supply chain finance application submitted! In a real system, this would process your request.');
             closeModal();
@@ -2325,9 +2692,46 @@ function showLanguageNotification(message) {
             alert('Investment submitted! In a real system, this would process your capital market investment.');
             closeModal();
         }
+        
+        function mockMsmeFinance() {
+            alert('Finance application submitted! Our team will contact you within 2 business days.');
+            closeModal();
+        }
 
+        function mockMsmeMarket() {
+            alert('Market search initiated. Matching partners will be displayed.');
+            closeModal();
+        }
+
+        function mockMsmeRegister(program) {
+            alert(`Registration submitted for ${program}! Confirmation will be sent to your email.`);
+        }
+
+        function mockMsmeTrainingRequest() {
+            alert('Training request received. We will contact you to discuss options.');
+            closeModal();
+        }
         function mockInsurance() {
             alert('Insurance quote generated! In a real system, this would provide coverage details and pricing.');
+            closeModal();
+        }
+
+        function mockUpdateMPR() {
+            const mpr = document.getElementById('mprSlider').value;
+            const corridor = document.getElementById('corridorSlider').value;
+            alert(`Monetary Policy Rate updated to ${mpr}% with ±${corridor}% corridor. This will be implemented on the selected date.`);
+            closeModal();
+        }
+
+        function mockUpdateReserves() {
+            const crr = document.getElementById('crrSlider').value;
+            const ldr = document.getElementById('ldrSlider').value;
+            alert(`Reserve requirements updated: CRR=${crr}%, LDR=${ldr}%. This will be implemented on the selected date.`);
+            closeModal();
+        }
+
+        function mockLiquidityOp() {
+            alert('Liquidity operation executed successfully. The operation will settle on-chain.');
             closeModal();
         }
 
