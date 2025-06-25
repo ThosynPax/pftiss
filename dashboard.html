@@ -291,13 +291,21 @@
                         <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" data-translate="trackNow" onclick="showModal('logistics')">Track Now</button>
                     </div>
 
+                   <!-- Monetary Policy Card - Replace existing one -->
                     <div id="monetary" class="card bg-white rounded-lg shadow-md p-6">
                         <h3 class="text-xl font-semibold mb-2" data-translate="monetaryTitle">Programmable Monetary Policy</h3>
                         <p class="text-gray-600 mb-4" data-translate="monetaryDesc">Configure and manage monetary policy parameters via smart contracts.</p>
                         <div class="space-y-4">
-                            <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary-rates')">Interest Rate Policy</button>
-                            <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary-reserves')">Reserve Requirements</button>
-                            <button class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="showModal('monetary-liquidity')">Liquidity Management</button>
+                            <a href="monetary-policy.html" class="block w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">
+                                <span data-translate="accessDashboard">Access Full Dashboard</span>
+                            </a>
+                            <!-- Quick actions -->
+                            <button class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onclick="showModal('quick-mpr')">
+                                <span data-translate="setMpr">Set MPR</span>
+                            </button>
+                            <button class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onclick="showModal('quick-reserves')">
+                                <span data-translate="adjustReserves">Adjust Reserves</span>
+                            </button>
                         </div>
                     </div>
                     <!-- Pension Module -->
@@ -955,7 +963,16 @@ const translations = {
         footerTagline: "Kuunganisha rasilimali za Afrika na uchumi wa ulimwengu kwa uvumbuzi wa chanzo wazi.",
         quickLinks: "Viungo vya Haraka",
         contactUs: "Wasiliana Nasi",
-        copyright: "© 2025 PFTISS. Haki zote zimehifadhiwa."
+        copyright: "© 2025 PFTISS. Haki zote zimehifadhiwa.",
+
+        // Add to all language blocks in translations
+        accessDashboard: "Access Full Dashboard",
+        setMpr: "Set MPR",
+        adjustReserves: "Adjust Reserves",
+        quickMprTitle: "Quick MPR Adjustment",
+        quickMprDesc: "Set the Monetary Policy Rate",
+        quickReservesTitle: "Quick Reserve Adjustment", 
+        quickReservesDesc: "Adjust reserve requirements"
     }
 };
 
@@ -2428,6 +2445,40 @@ function changeLanguage() {
                         </div>
                     `
                 },
+                'quick-mpr': {
+                    title: 'Quick MPR Adjustment',
+                    description: 'Set the Monetary Policy Rate',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">New MPR Rate (%)</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="14.0" step="0.1">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">Effective Date</label>
+                                <input type="date" class="w-full border border-gray-300 rounded px-3 py-2" value="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockUpdateMPR()">Update MPR</button>
+                        </div>
+                    `
+                },
+                'quick-reserves': {
+                    title: 'Quick Reserve Adjustment',
+                    description: 'Adjust reserve requirements',
+                    form: `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700">CRR (%)</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="27.5" step="0.1">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700">LDR (%)</label>
+                                <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="65" step="1">
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="mockUpdateReserves()">Update Reserves</button>
+                        </div>
+                    `
+                },
                 offline: {
                     title: 'Offline Transactions',
                     description: 'Setup USSD, SMS, or NFC-based transactions in multiple languages for low-connectivity areas.',
@@ -2896,6 +2947,19 @@ function showLanguageNotification(message) {
         // Mock FX Trade
         function mockFxTrade() {
             alert('FX trade executed with instant settlement! In a real system, this would settle on-chain.');
+            closeModal();
+        }
+
+        function mockUpdateMPR() {
+            const rate = document.querySelector('#quick-mpr input[type="number"]').value;
+            alert(`MPR updated to ${rate}%`);
+            closeModal();
+        }
+
+        function mockUpdateReserves() {
+            const crr = document.querySelector('#quick-reserves input:nth-of-type(1)').value;
+            const ldr = document.querySelector('#quick-reserves input:nth-of-type(2)').value;
+            alert(`Reserve requirements updated: CRR=${crr}%, LDR=${ldr}%`);
             closeModal();
         }
 

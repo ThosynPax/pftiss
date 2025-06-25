@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFTISS - Monetary Policy Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .nav-tab {
+            transition: all 0.3s ease;
+        }
+        .nav-tab.active {
+            border-bottom: 3px solid #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-blue-800 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="text-xl font-bold">PFTISS</a>
+                <span class="text-blue-200">Monetary Policy Dashboard</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="currentDate" class="text-blue-200"></span>
+                <a href="index.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Main
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row gap-6">
+            <!-- Sidebar -->
+            <div class="w-full md:w-64 bg-white rounded-lg shadow-md p-4">
+                <div class="space-y-1">
+                    <button onclick="showTab('dashboard')" class="nav-tab active w-full text-left px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                    </button>
+                    <button onclick="showTab('rates')" class="nav-tab w-full text-left px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-percentage mr-2"></i> Interest Rates
+                    </button>
+                    <button onclick="showTab('reserves')" class="nav-tab w-full text-left px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-coins mr-2"></i> Reserve Management
+                    </button>
+                    <button onclick="showTab('liquidity')" class="nav-tab w-full text-left px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-exchange-alt mr-2"></i> Liquidity Ops
+                    </button>
+                    <button onclick="showTab('fx')" class="nav-tab w-full text-left px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-money-bill-wave mr-2"></i> FX Management
+                    </button>
+                    <button onclick="showTab('reports')" class="nav-tab w-full text-left px-4 py-2 rounded hover:bg-blue-50">
+                        <i class="fas fa-chart-bar mr-2"></i> Reports
+                    </button>
+                </div>
+                
+                <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+                    <h3 class="font-semibold text-blue-800">Quick Actions</h3>
+                    <div class="mt-2 space-y-2">
+                        <button onclick="quickAction('mpr')" class="w-full bg-blue-100 text-blue-800 px-3 py-1 rounded text-sm hover:bg-blue-200">
+                            Adjust MPR
+                        </button>
+                        <button onclick="quickAction('crr')" class="w-full bg-blue-100 text-blue-800 px-3 py-1 rounded text-sm hover:bg-blue-200">
+                            Set CRR
+                        </button>
+                        <button onclick="quickAction('omo')" class="w-full bg-blue-100 text-blue-800 px-3 py-1 rounded text-sm hover:bg-blue-200">
+                            OMO Auction
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Panel -->
+            <div class="flex-1">
+                <!-- Dashboard Tab -->
+                <div id="dashboardTab" class="tab-content">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-6">Monetary Policy Dashboard</h2>
+                        
+                        <!-- Key Metrics -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="card bg-white p-4 rounded-lg border border-blue-100">
+                                <h3 class="text-lg font-semibold text-gray-600">MPR</h3>
+                                <p class="text-3xl font-bold text-blue-600">14.5%</p>
+                                <p class="text-sm text-gray-500">Last changed: 15 May 2025</p>
+                            </div>
+                            <div class="card bg-white p-4 rounded-lg border border-blue-100">
+                                <h3 class="text-lg font-semibold text-gray-600">CRR</h3>
+                                <p class="text-3xl font-bold text-blue-600">27.5%</p>
+                                <p class="text-sm text-gray-500">Commercial banks</p>
+                            </div>
+                            <div class="card bg-white p-4 rounded-lg border border-blue-100">
+                                <h3 class="text-lg font-semibold text-gray-600">Liquidity</h3>
+                                <p class="text-3xl font-bold text-blue-600">₦2.4T</p>
+                                <p class="text-sm text-gray-500">System liquidity</p>
+                            </div>
+                            <div class="card bg-white p-4 rounded-lg border border-blue-100">
+                                <h3 class="text-lg font-semibold text-gray-600">Reserves</h3>
+                                <p class="text-3xl font-bold text-blue-600">$42.7B</p>
+                                <p class="text-sm text-gray-500">External reserves</p>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="card bg-white p-4 rounded-lg">
+                                <h3 class="text-lg font-semibold mb-4">MPR Trend</h3>
+                                <canvas id="mprChart" height="250"></canvas>
+                            </div>
+                            <div class="card bg-white p-4 rounded-lg">
+                                <h3 class="text-lg font-semibold mb-4">Liquidity Position</h3>
+                                <canvas id="liquidityChart" height="250"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recent Actions -->
+                        <div class="card bg-white p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold mb-4">Recent Policy Actions</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full">
+                                    <thead>
+                                        <tr class="bg-gray-100">
+                                            <th class="px-4 py-2 text-left">Date</th>
+                                            <th class="px-4 py-2 text-left">Action</th>
+                                            <th class="px-4 py-2 text-left">Amount</th>
+                                            <th class="px-4 py-2 text-left">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b">
+                                            <td class="px-4 py-2">2025-05-15</td>
+                                            <td class="px-4 py-2">MPR Adjustment</td>
+                                            <td class="px-4 py-2">+50bps to 14.5%</td>
+                                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Active</span></td>
+                                        </tr>
+                                        <tr class="border-b">
+                                            <td class="px-4 py-2">2025-04-28</td>
+                                            <td class="px-4 py-2">OMO Auction</td>
+                                            <td class="px-4 py-2">₦150B</td>
+                                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Settled</span></td>
+                                        </tr>
+                                        <tr class="border-b">
+                                            <td class="px-4 py-2">2025-04-15</td>
+                                            <td class="px-4 py-2">CRR Adjustment</td>
+                                            <td class="px-4 py-2">27.5%</td>
+                                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Active</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interest Rates Tab -->
+                <div id="ratesTab" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-6">Interest Rate Policy</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                                <h3 class="text-xl font-semibold mb-4">Monetary Policy Rate</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Current MPR</label>
+                                        <div class="text-4xl font-bold text-blue-600">14.5%</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Adjust MPR</label>
+                                        <input type="range" min="0" max="30" value="14.5" step="0.1" 
+                                               class="w-full" id="mprControl">
+                                        <div class="flex justify-between text-sm text-gray-600">
+                                            <span>0%</span>
+                                            <span id="mprValue">14.5%</span>
+                                            <span>30%</span>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Effective Date</label>
+                                        <input type="date" class="w-full border border-gray-300 rounded px-3 py-2">
+                                    </div>
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                                        Update MPR
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                                <h3 class="text-xl font-semibold mb-4">Interest Rate Corridor</h3>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Standing Lending Facility</label>
+                                        <div class="text-2xl font-bold text-blue-600">15.5%</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Standing Deposit Facility</label>
+                                        <div class="text-2xl font-bold text-blue-600">13.5%</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">Corridor Width</label>
+                                        <input type="range" min="1" max="10" value="2" step="0.5" 
+                                               class="w-full" id="corridorControl">
+                                        <div class="flex justify-between text-sm text-gray-600">
+                                            <span>1%</span>
+                                            <span id="corridorValue">2%</span>
+                                            <span>10%</span>
+                                        </div>
+                                    </div>
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                                        Update Corridor
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reserve Management Tab -->
+<div id="reservesTab" class="tab-content hidden">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-blue-800 mb-6">Reserve Management</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">Cash Reserve Ratio (CRR)</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Current CRR</label>
+                        <div class="text-4xl font-bold text-blue-600">27.5%</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Adjust CRR</label>
+                        <input type="range" min="1" max="50" value="27.5" step="0.5" 
+                               class="w-full" id="crrControl">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>1%</span>
+                            <span id="crrValue">27.5%</span>
+                            <span>50%</span>
+                        </div>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                        Update CRR
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">Liquidity Ratio (LR)</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Current LR</label>
+                        <div class="text-4xl font-bold text-blue-600">30%</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Adjust LR</label>
+                        <input type="range" min="10" max="100" value="30" step="1" 
+                               class="w-full" id="lrControl">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>10%</span>
+                            <span id="lrValue">30%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                        Update LR
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white p-6 rounded-lg border border-blue-100">
+            <h3 class="text-xl font-semibold mb-4">Reserve Composition</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <canvas id="reservesChart" height="250"></canvas>
+                </div>
+                <div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">Asset</th>
+                                    <th class="px-4 py-2 text-left">Amount</th>
+                                    <th class="px-4 py-2 text-left">% of Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2">Foreign Currency</td>
+                                    <td class="px-4 py-2">$32.4B</td>
+                                    <td class="px-4 py-2">42%</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2">Gold</td>
+                                    <td class="px-4 py-2">1.25M oz</td>
+                                    <td class="px-4 py-2">28%</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2">SDRs</td>
+                                    <td class="px-4 py-2">$4.2B</td>
+                                    <td class="px-4 py-2">12%</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="px-4 py-2">Other</td>
+                                    <td class="px-4 py-2">$6.1B</td>
+                                    <td class="px-4 py-2">18%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Liquidity Operations Tab -->
+<div id="liquidityTab" class="tab-content hidden">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-blue-800 mb-6">Liquidity Operations</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">Open Market Operations</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Operation Type</label>
+                        <select class="w-full border border-gray-300 rounded px-3 py-2">
+                            <option>OMO Auction</option>
+                            <option>Standing Facility</option>
+                            <option>Special Auction</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Amount (₦B)</label>
+                        <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="100">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Tenor (days)</label>
+                        <select class="w-full border border-gray-300 rounded px-3 py-2">
+                            <option>7</option>
+                            <option>14</option>
+                            <option>30</option>
+                            <option>60</option>
+                            <option>90</option>
+                            <option>180</option>
+                            <option>365</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Rate (%)</label>
+                        <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" value="12.5" step="0.1">
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                        Execute Operation
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">System Liquidity</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Current Liquidity</label>
+                        <div class="text-4xl font-bold text-blue-600">₦2.4T</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Liquidity Forecast</label>
+                        <canvas id="liquidityForecastChart" height="150"></canvas>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Last OMO</label>
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-medium">₦150B at 12.5%</p>
+                            <p class="text-sm text-gray-600">Settled on 2025-04-28</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white p-6 rounded-lg border border-blue-100">
+            <h3 class="text-xl font-semibold mb-4">Recent Liquidity Operations</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2 text-left">Date</th>
+                            <th class="px-4 py-2 text-left">Type</th>
+                            <th class="px-4 py-2 text-left">Amount</th>
+                            <th class="px-4 py-2 text-left">Rate</th>
+                            <th class="px-4 py-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">2025-04-28</td>
+                            <td class="px-4 py-2">OMO Auction</td>
+                            <td class="px-4 py-2">₦150B</td>
+                            <td class="px-4 py-2">12.5%</td>
+                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Settled</span></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">2025-04-21</td>
+                            <td class="px-4 py-2">OMO Auction</td>
+                            <td class="px-4 py-2">₦120B</td>
+                            <td class="px-4 py-2">12.75%</td>
+                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Settled</span></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">2025-04-14</td>
+                            <td class="px-4 py-2">Standing Lending</td>
+                            <td class="px-4 py-2">₦45B</td>
+                            <td class="px-4 py-2">15.5%</td>
+                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Repaid</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FX Management Tab -->
+<div id="fxTab" class="tab-content hidden">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-blue-800 mb-6">FX Management</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">FX Swap Operations</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Currency Pair</label>
+                        <select class="w-full border border-gray-300 rounded px-3 py-2">
+                            <option>USD/NGN</option>
+                            <option>EUR/NGN</option>
+                            <option>GBP/NGN</option>
+                            <option>CNY/NGN</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Amount</label>
+                        <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Enter amount">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Rate</label>
+                        <input type="number" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Enter rate">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Tenor</label>
+                        <select class="w-full border border-gray-300 rounded px-3 py-2">
+                            <option>1 week</option>
+                            <option>1 month</option>
+                            <option>3 months</option>
+                            <option>6 months</option>
+                            <option>1 year</option>
+                        </select>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                        Execute Swap
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">FX Rates & Reserves</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Current Rates</label>
+                        <div class="bg-gray-50 p-3 rounded">
+                            <p class="font-medium">USD/NGN: ₦1,450.75</p>
+                            <p class="font-medium">EUR/NGN: ₦1,580.30</p>
+                            <p class="font-medium">GBP/NGN: ₦1,820.15</p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">External Reserves</label>
+                        <div class="text-3xl font-bold text-blue-600">$42.7B</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Reserves Composition</label>
+                        <canvas id="fxReservesChart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white p-6 rounded-lg border border-blue-100">
+            <h3 class="text-xl font-semibold mb-4">Recent FX Operations</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2 text-left">Date</th>
+                            <th class="px-4 py-2 text-left">Operation</th>
+                            <th class="px-4 py-2 text-left">Amount</th>
+                            <th class="px-4 py-2 text-left">Rate</th>
+                            <th class="px-4 py-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">2025-05-10</td>
+                            <td class="px-4 py-2">USD/NGN Swap</td>
+                            <td class="px-4 py-2">$100M</td>
+                            <td class="px-4 py-2">₦1,450.50</td>
+                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Completed</span></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">2025-05-03</td>
+                            <td class="px-4 py-2">EUR/NGN Swap</td>
+                            <td class="px-4 py-2">€50M</td>
+                            <td class="px-4 py-2">₦1,580.75</td>
+                            <td class="px-4 py-2"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Completed</span></td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">2025-04-26</td>
+                            <td class="px-4 py-2">USD/NGN Forward</td>
+                            <td class="px-4 py-2">$75M</td>
+                            <td class="px-4 py-2">₦1,455.25</td>
+                            <td class="px-4 py-2"><span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-xs">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reports Tab -->
+<div id="reportsTab" class="tab-content hidden">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-blue-800 mb-6">Reports & Analytics</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">Generate Report</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Report Type</label>
+                        <select class="w-full border border-gray-300 rounded px-3 py-2">
+                            <option>Monetary Policy Report</option>
+                            <option>Liquidity Report</option>
+                            <option>FX Operations Report</option>
+                            <option>Reserves Report</option>
+                            <option>Financial Stability Report</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Date Range</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="date" class="border border-gray-300 rounded px-3 py-2" placeholder="From">
+                            <input type="date" class="border border-gray-300 rounded px-3 py-2" placeholder="To">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Format</label>
+                        <select class="w-full border border-gray-300 rounded px-3 py-2">
+                            <option>PDF</option>
+                            <option>Excel</option>
+                            <option>CSV</option>
+                        </select>
+                    </div>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
+                        Generate Report
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card bg-white p-6 rounded-lg border border-blue-100">
+                <h3 class="text-xl font-semibold mb-4">Key Indicators</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2">Inflation Rate</label>
+                        <div class="text-3xl font-bold text-blue-600">21.4%</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">GDP Growth</label>
+                        <div class="text-3xl font-bold text-blue-600">2.8%</div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2">Trend Analysis</label>
+                        <canvas id="indicatorsChart" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bg-white p-6 rounded-lg border border-blue-100">
+            <h3 class="text-xl font-semibold mb-4">Recent Reports</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-2 text-left">Report</th>
+                            <th class="px-4 py-2 text-left">Period</th>
+                            <th class="px-4 py-2 text-left">Generated</th>
+                            <th class="px-4 py-2 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">Monetary Policy Report</td>
+                            <td class="px-4 py-2">Q1 2025</td>
+                            <td class="px-4 py-2">2025-04-15</td>
+                            <td class="px-4 py-2">
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">View</button>
+                                <button class="text-blue-600 hover:text-blue-800">Download</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">Financial Stability Report</td>
+                            <td class="px-4 py-2">2024</td>
+                            <td class="px-4 py-2">2025-03-30</td>
+                            <td class="px-4 py-2">
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">View</button>
+                                <button class="text-blue-600 hover:text-blue-800">Download</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="px-4 py-2">FX Operations Report</td>
+                            <td class="px-4 py-2">April 2025</td>
+                            <td class="px-4 py-2">2025-05-05</td>
+                            <td class="px-4 py-2">
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">View</button>
+                                <button class="text-blue-600 hover:text-blue-800">Download</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+
+        // Reserves Chart
+const reservesCtx = document.getElementById('reservesChart').getContext('2d');
+new Chart(reservesCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Foreign Currency', 'Gold', 'SDRs', 'Other'],
+        datasets: [{
+            data: [42, 28, 12, 18],
+            backgroundColor: [
+                '#3b82f6',
+                '#f59e0b',
+                '#10b981',
+                '#6366f1'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'right'
+            }
+        }
+    }
+});
+
+// Liquidity Forecast Chart
+const liquidityForecastCtx = document.getElementById('liquidityForecastChart').getContext('2d');
+new Chart(liquidityForecastCtx, {
+    type: 'line',
+    data: {
+        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+        datasets: [{
+            label: 'Liquidity (₦T)',
+            data: [2.4, 2.6, 2.3, 2.5, 2.7, 2.8],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.3,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    }
+});
+
+// FX Reserves Chart
+const fxReservesCtx = document.getElementById('fxReservesChart').getContext('2d');
+new Chart(fxReservesCtx, {
+    type: 'bar',
+    data: {
+        labels: ['USD', 'EUR', 'GBP', 'CNY', 'Gold', 'Other'],
+        datasets: [{
+            label: 'Reserves by Currency',
+            data: [65, 12, 8, 5, 7, 3],
+            backgroundColor: [
+                '#3b82f6',
+                '#6366f1',
+                '#8b5cf6',
+                '#ec4899',
+                '#f59e0b',
+                '#10b981'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+// Indicators Chart
+const indicatorsCtx = document.getElementById('indicatorsChart').getContext('2d');
+new Chart(indicatorsCtx, {
+    type: 'line',
+    data: {
+        labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+        datasets: [
+            {
+                label: 'Inflation',
+                data: [12.4, 15.6, 18.9, 21.3, 22.7, 21.4],
+                borderColor: '#ef4444',
+                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                tension: 0.3
+            },
+            {
+                label: 'GDP Growth',
+                data: [1.9, 3.2, 3.1, 2.6, 2.4, 2.8],
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                tension: 0.3
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Add slider controls for Reserve Management tab
+document.getElementById('crrControl').addEventListener('input', function() {
+    document.getElementById('crrValue').textContent = this.value + '%';
+});
+
+document.getElementById('lrControl').addEventListener('input', function() {
+    document.getElementById('lrValue').textContent = this.value + '%';
+});
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Tab navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Deactivate all tab buttons
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.remove('hidden');
+            
+            // Activate selected button
+            event.currentTarget.classList.add('active');
+        }
+
+        // Quick actions
+        function quickAction(action) {
+            alert(`In a real implementation, this would trigger: ${action} action`);
+            // You would implement specific actions for each button
+        }
+
+        // MPR slider
+        document.getElementById('mprControl').addEventListener('input', function() {
+            document.getElementById('mprValue').textContent = this.value + '%';
+        });
+
+        // Corridor slider
+        document.getElementById('corridorControl').addEventListener('input', function() {
+            document.getElementById('corridorValue').textContent = this.value + '%';
+        });
+
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // MPR Chart
+            const mprCtx = document.getElementById('mprChart').getContext('2d');
+            new Chart(mprCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'MPR (%)',
+                        data: [13.5, 13.5, 14.0, 14.0, 14.5, 14.5],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            min: 13
+                        }
+                    }
+                }
+            });
+
+            // Liquidity Chart
+            const liquidityCtx = document.getElementById('liquidityChart').getContext('2d');
+            new Chart(liquidityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [{
+                        label: 'Liquidity (₦T)',
+                        data: [1.8, 2.1, 2.3, 2.0, 2.4],
+                        backgroundColor: '#10b981',
+                        borderColor: '#059669',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
