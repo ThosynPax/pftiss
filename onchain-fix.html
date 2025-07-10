@@ -1,0 +1,520 @@
+<script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    
+    // Keep all your existing components and add these fixes for the on-chain section
+    
+    // Fixed Transaction Explorer Component
+    const TransactionExplorer = ({ transactions, onSelectTransaction }) => (
+        <div className="mb-6">
+            <h2 className="text-xl font-bold mb-4">Transaction & Smart Contract Explorer</h2>
+            <div className="overflow-x-auto">
+                <table className="min-w-full">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="px-4 py-2 text-left">ID</th>
+                            <th className="px-4 py-2 text-left">Address/Contract</th>
+                            <th className="px-4 py-2 text-left">Amount</th>
+                            <th className="px-4 py-2 text-left">Currency</th>
+                            <th className="px-4 py-2 text-left">Blockchain</th>
+                            <th className="px-4 py-2 text-left">Timestamp</th>
+                            <th className="px-4 py-2 text-left">Risk Score</th>
+                            <th className="px-4 py-2 text-left">Status</th>
+                            <th className="px-4 py-2 text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map(tx => (
+                            <tr key={tx.id} className="border-b">
+                                <td className="px-4 py-2">{tx.id}</td>
+                                <td className="px-4 py-2 font-mono text-sm">{tx.address.substring(0, 10)}...{tx.address.substring(tx.address.length - 8)}</td>
+                                <td className="px-4 py-2">{tx.amount}</td>
+                                <td className="px-4 py-2">{tx.currency}</td>
+                                <td className="px-4 py-2">{tx.blockchain}</td>
+                                <td className="px-4 py-2">{new Date(tx.timestamp).toLocaleString()}</td>
+                                <td className={`px-4 py-2 font-semibold ${tx.riskScore > 80 ? 'text-red-600' : tx.riskScore > 60 ? 'text-yellow-600' : 'text-green-600'}`}>
+                                    {tx.riskScore}
+                                </td>
+                                <td className={`px-4 py-2 font-semibold ${tx.status === 'Suspicious' ? 'text-red-600' : 'text-green-600'}`}>
+                                    {tx.status}
+                                </td>
+                                <td className="px-4 py-2">
+                                    <button
+                                        onClick={() => onSelectTransaction(tx)}
+                                        className="text-blue-600 hover:text-blue-800 underline"
+                                    >
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+
+    // Fixed AI Risk Analytics Component
+    const AIRiskAnalytics = ({ analytics }) => (
+        <div className="bg-white p-4 rounded-lg border border-blue-100 mb-6">
+            <h2 className="text-xl font-bold mb-4">AI-Powered Risk Analytics</h2>
+            {analytics.length === 0 ? (
+                <p className="text-gray-600">No AI alerts at this time.</p>
+            ) : (
+                <ul className="space-y-2">
+                    {analytics.map(alert => (
+                        <li key={alert.id} className={`p-3 rounded-lg border-l-4 ${alert.severity === 'High' ? 'border-red-500 bg-red-50 text-red-800' : 'border-yellow-500 bg-yellow-50 text-yellow-800'}`}>
+                            <div className="font-semibold">{alert.issue}</div>
+                            <div className="text-sm">Transaction/Contract: {alert.transactionId}</div>
+                            <div className="text-sm">Severity: {alert.severity}</div>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+
+    // Fixed Regulatory Reporting Component
+    const RegulatoryReporting = ({ transactions }) => {
+        const generateReport = async () => {
+            try {
+                const reportData = {
+                    totalTransactions: transactions.length,
+                    suspiciousTransactions: transactions.filter(tx => tx.status === 'Suspicious').length,
+                    complianceRate: Math.round((transactions.filter(tx => tx.status === 'Compliant').length / transactions.length) * 100),
+                    reportDate: new Date().toISOString(),
+                    transactions: transactions
+                };
+                alert(`Compliance Report Generated:\n\nTotal Transactions: ${reportData.totalTransactions}\nSuspicious: ${reportData.suspiciousTransactions}\nCompliance Rate: ${reportData.complianceRate}%\n\nReport would be downloaded in a real system.`);
+            } catch (error) {
+                console.error('Error generating report:', error);
+                alert('Failed to generate report.');
+            }
+        };
+
+        return (
+            <div className="bg-white p-4 rounded-lg border border-blue-100 mb-6">
+                <h2 className="text-xl font-bold mb-4">Regulatory Reporting</h2>
+                <div className="space-y-4">
+                    <button
+                        onClick={generateReport}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                        Generate Compliance Report
+                    </button>
+                    <button
+                        onClick={() => alert('AML Report would be generated in a real system')}
+                        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-2"
+                    >
+                        Generate AML Report
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    // Fixed Cross-Chain Monitoring Component
+    const CrossChainMonitoring = ({ transactions }) => {
+        const blockchains = [...new Set(transactions.map(tx => tx.blockchain))];
+        return (
+            <div className="bg-white p-4 rounded-lg border border-blue-100 mb-6">
+                <h2 className="text-xl font-bold mb-4">Cross-Chain Monitoring</h2>
+                <div className="space-y-3">
+                    {blockchains.map((chain, index) => {
+                        const chainTransactions = transactions.filter(tx => tx.blockchain === chain);
+                        const suspiciousCount = chainTransactions.filter(tx => tx.status === 'Suspicious').length;
+                        return (
+                            <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <div>
+                                    <div className="font-semibold">{chain}</div>
+                                    <div className="text-sm text-gray-600">
+                                        {chainTransactions.length} transactions/contracts
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <div className={`text-sm font-semibold ${suspiciousCount > 0 ? 'text-red-600' : 'text-green-600'}`}>
+                                        {suspiciousCount} suspicious
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        );
+    };
+
+    // Fixed Transaction Details Modal
+    const TransactionDetails = ({ transaction, onClose }) => {
+        if (!transaction) return null;
+
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full mx-4 max-h-96 overflow-y-auto">
+                    <h2 className="text-xl font-bold mb-4">
+                        {transaction.isSmartContract ? 'Smart Contract Details' : 'Transaction Details'}
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p><strong>ID:</strong> {transaction.id}</p>
+                            <p><strong>Address/Contract:</strong> <span className="font-mono text-sm">{transaction.address}</span></p>
+                            <p><strong>Amount:</strong> {transaction.amount} {transaction.currency}</p>
+                            <p><strong>Blockchain:</strong> {transaction.blockchain}</p>
+                        </div>
+                        <div>
+                            <p><strong>Timestamp:</strong> {new Date(transaction.timestamp).toLocaleString()}</p>
+                            <p><strong>Risk Score:</strong> <span className={transaction.riskScore > 80 ? 'text-red-600 font-semibold' : 'text-green-600'}>{transaction.riskScore}</span></p>
+                            <p><strong>Status:</strong> <span className={transaction.status === 'Suspicious' ? 'text-red-600 font-semibold' : 'text-green-600'}>{transaction.status}</span></p>
+                            <p><strong>eNaira:</strong> {transaction.isENaira ? 'Yes' : 'No'}</p>
+                        </div>
+                    </div>
+                    {transaction.isSmartContract && (
+                        <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                            <h3 className="font-semibold mb-2">Smart Contract Details</h3>
+                            <p><strong>Function Calls:</strong> {transaction.functionCalls || 'None'}</p>
+                            <p><strong>Vulnerabilities:</strong> {transaction.vulnerabilities || 'None detected'}</p>
+                        </div>
+                    )}
+                    <button
+                        onClick={onClose}
+                        className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    // Fixed Dashboard Stats Component
+    const DashboardStats = ({ stats }) => (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">Total Transactions</h3>
+                <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
+            </div>
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">Smart Contracts</h3>
+                <p className="text-3xl font-bold text-blue-600">{stats.smartContracts}</p>
+            </div>
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">High-Risk Alerts</h3>
+                <p className="text-3xl font-bold text-red-600">{stats.highRisk}</p>
+            </div>
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">Compliance Rate</h3>
+                <p className="text-3xl font-bold text-green-600">{stats.complianceRate}%</p>
+            </div>
+        </div>
+    );
+
+    // Fixed Chart Component
+    const TransactionChart = ({ transactions }) => {
+        const chartRef = useRef(null);
+        const chartInstance = useRef(null);
+
+        useEffect(() => {
+            if (!chartRef.current) return;
+
+            const ctx = chartRef.current.getContext('2d');
+            const blockchains = [...new Set(transactions.map(tx => tx.blockchain))];
+            const data = blockchains.map(chain => ({
+                blockchain: chain,
+                count: transactions.filter(tx => tx.blockchain === chain).length
+            }));
+
+            // Destroy existing chart if it exists
+            if (chartInstance.current) {
+                chartInstance.current.destroy();
+            }
+
+            chartInstance.current = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.blockchain),
+                    datasets: [{
+                        label: 'Transaction/Smart Contract Volume',
+                        data: data.map(d => d.count),
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            return () => {
+                if (chartInstance.current) {
+                    chartInstance.current.destroy();
+                }
+            };
+        }, [transactions]);
+
+        return (
+            <div className="card bg-white p-4 rounded-lg border border-blue-100 mb-6">
+                <h3 className="text-lg font-semibold mb-4">Transaction Volume by Chain</h3>
+                <canvas ref={chartRef}></canvas>
+            </div>
+        );
+    };
+
+    // FIXED Main Dashboard Component - This is the key fix
+    const RegulatoryDashboard = () => {
+        const [transactions, setTransactions] = useState([]);
+        const [analytics, setAnalytics] = useState([]);
+        const [stats, setStats] = useState({ total: 0, smartContracts: 0, highRisk: 0, complianceRate: 100 });
+        const [selectedTransaction, setSelectedTransaction] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+
+        useEffect(() => {
+            const fetchData = () => {
+                try {
+                    setLoading(true);
+                    
+                    const mockTransactions = [
+                        {
+                            id: 'tx1',
+                            address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                            amount: '1.5',
+                            currency: 'ETH',
+                            blockchain: 'Ethereum',
+                            timestamp: new Date().toISOString(),
+                            riskScore: 75,
+                            status: 'Compliant',
+                            isENaira: false,
+                            isSmartContract: false
+                        },
+                        {
+                            id: 'tx2',
+                            address: '0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t',
+                            amount: '25000',
+                            currency: 'eNGN',
+                            blockchain: 'eNaira DLT',
+                            timestamp: new Date(Date.now() - 3600000).toISOString(),
+                            riskScore: 92,
+                            status: 'Suspicious',
+                            isENaira: true,
+                            isSmartContract: true,
+                            functionCalls: 'transfer, approve',
+                            vulnerabilities: 'Reentrancy detected'
+                        },
+                        {
+                            id: 'tx3',
+                            address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
+                            amount: '0.85',
+                            currency: 'BTC',
+                            blockchain: 'Bitcoin',
+                            timestamp: new Date(Date.now() - 7200000).toISOString(),
+                            riskScore: 45,
+                            status: 'Compliant',
+                            isENaira: false,
+                            isSmartContract: false
+                        },
+                        {
+                            id: 'tx4',
+                            address: '0x8ba1f109551bD432803012645Hac136c5c8b448b',
+                            amount: '500',
+                            currency: 'USDC',
+                            blockchain: 'Polygon',
+                            timestamp: new Date(Date.now() - 10800000).toISOString(),
+                            riskScore: 30,
+                            status: 'Compliant',
+                            isENaira: false,
+                            isSmartContract: true,
+                            functionCalls: 'swap, addLiquidity',
+                            vulnerabilities: 'None detected'
+                        }
+                    ];
+
+                    const mockAnalytics = [
+                        {
+                            id: 'alert1',
+                            issue: 'Possible money laundering pattern detected',
+                            transactionId: 'tx2',
+                            severity: 'High'
+                        },
+                        {
+                            id: 'alert2',
+                            issue: 'Unusual transaction frequency',
+                            transactionId: 'tx1',
+                            severity: 'Medium'
+                        }
+                    ];
+
+                    // Calculate stats
+                    const totalTransactions = mockTransactions.length;
+                    const smartContracts = mockTransactions.filter(tx => tx.isSmartContract).length;
+                    const highRisk = mockTransactions.filter(tx => tx.riskScore > 80).length;
+                    const compliantTransactions = mockTransactions.filter(tx => tx.status === 'Compliant').length;
+                    const complianceRate = Math.round((compliantTransactions / totalTransactions) * 100);
+
+                    setTransactions(mockTransactions);
+                    setAnalytics(mockAnalytics);
+                    setStats({
+                        total: totalTransactions,
+                        smartContracts,
+                        highRisk,
+                        complianceRate
+                    });
+                    
+                    // KEY FIX: Set loading to false
+                    setLoading(false);
+                } catch (error) {
+                    console.error('Error loading mock data:', error);
+                    setError('Failed to load dashboard data');
+                    setLoading(false);
+                }
+            };
+
+            // Initial load
+            fetchData();
+
+            // Set up refresh interval (every 60 seconds)
+            const interval = setInterval(fetchData, 60000);
+
+            // Cleanup function
+            return () => {
+                clearInterval(interval);
+            };
+        }, []);
+
+        if (loading) {
+            return (
+                <div className="flex justify-center items-center h-64">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                    <span className="ml-3 text-gray-600">Loading regulatory dashboard...</span>
+                </div>
+            );
+        }
+
+        if (error) {
+            return (
+                <div className="p-4 bg-red-100 text-red-800 rounded-lg">
+                    Error loading data: {error}
+                    <button 
+                        onClick={() => window.location.reload()} 
+                        className="ml-4 bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700"
+                    >
+                        Retry
+                    </button>
+                </div>
+            );
+        }
+
+        return (
+            <div>
+                <h3 className="text-xl font-semibold mb-4">On-Chain Activity Overview</h3>
+                
+                <DashboardStats stats={stats} />
+                <TransactionChart transactions={transactions} />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <CrossChainMonitoring transactions={transactions} />
+                    <AIRiskAnalytics analytics={analytics} />
+                </div>
+                
+                <RegulatoryReporting transactions={transactions} />
+                <TransactionExplorer transactions={transactions} onSelectTransaction={setSelectedTransaction} />
+                
+                {selectedTransaction && (
+                    <TransactionDetails 
+                        transaction={selectedTransaction} 
+                        onClose={() => setSelectedTransaction(null)} 
+                    />
+                )}
+            </div>
+        );
+    };
+
+    // FIXED initialization function
+    function initializeOnchainDashboard() {
+        console.log('Initializing onchain dashboard...');
+        
+        const rootElement = document.getElementById('onchainRoot');
+        if (!rootElement) {
+            console.error('onchainRoot element not found');
+            return;
+        }
+
+        // Check if React is properly loaded
+        if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
+            console.error('React is not loaded');
+            setTimeout(initializeOnchainDashboard, 100);
+            return;
+        }
+
+        try {
+            // Clear any existing content
+            rootElement.innerHTML = '';
+            
+            // Render the dashboard
+            ReactDOM.render(
+                React.createElement('div', { className: 'p-4' },
+                    React.createElement(RegulatoryDashboard)
+                ),
+                rootElement
+            );
+            console.log('On-chain dashboard rendered successfully');
+        } catch (error) {
+            console.error('Failed to render dashboard:', error);
+            rootElement.innerHTML = `
+                <div class="p-4 bg-red-100 text-red-800 rounded-lg">
+                    Error loading dashboard. Please refresh the page.
+                    <div class="text-sm mt-2">${error.message}</div>
+                </div>
+            `;
+        }
+    }
+
+    // FIXED Tab switching function - only update this part
+    function showTab(tabName) {
+        console.log('Switching to tab:', tabName);
+        
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+            tab.classList.add('hidden');
+        });
+        
+        // Show selected tab
+        const tabElement = document.getElementById(tabName + 'Tab');
+        if (tabElement) {
+            tabElement.classList.remove('hidden');
+            tabElement.classList.add('active');
+            console.log('Tab element found and shown:', tabName + 'Tab');
+        } else {
+            console.error('Tab element not found:', tabName + 'Tab');
+        }
+        
+        // Special handling for onchain tab
+        if (tabName === 'onchain') {
+            console.log('Initializing onchain dashboard...');
+            // Small delay to ensure the tab is visible before rendering React
+            setTimeout(initializeOnchainDashboard, 100);
+        }
+    }
+
+    // Keep your existing initialization but add this fix
+    document.addEventListener('DOMContentLoaded', function() {
+        // Your existing code stays the same, just add this line to test the onchain section
+        console.log('DOM loaded, onchain section available');
+        
+        // Make sure the onchain tab is properly set up
+        const onchainTab = document.getElementById('onchainTab');
+        if (onchainTab) {
+            console.log('Onchain tab found in DOM');
+        } else {
+            console.error('Onchain tab not found in DOM');
+        }
+    });
+</script>

@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PFTISS - Pan-African Financial & Trade Platform</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.22.5/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.4.0/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
   <style>
     .modal {
       display: none;
@@ -65,6 +72,23 @@
       padding: 8px;
       text-align: left;
     }
+    .tab-content {
+    display: none;
+}
+.tab-content {
+        border: 2px dashed red; 
+    }
+    #onchainRoot {
+        min-height: 300px;
+        background-color: rgba(0,0,255,0.1);
+    }
+.tab-content.active {
+    display: block;
+}
+.nav-tab.active {
+    background-color: #3b82f6;
+    color: white;
+}
     .transaction-table tr:nth-child(even) {
       background-color: #f2f2f2;
     }
@@ -104,8 +128,515 @@
         width: 100%;
       }
     }
+    /* Add to your existing styles */
+#onchainRoot {
+    min-height: 500px;
+    background-color: #f8fafc;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+#onchainRoot .card {
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#onchainRoot .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#onchainRoot table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#onchainRoot th, #onchainRoot td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#onchainRoot th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
   </style>
+<script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Transaction Explorer Component
+    const TransactionExplorer = ({ transactions, onSelectTransaction }) => (
+        <div className="mb-6">
+            <h2 className="text-xl font-bold mb-4">Transaction & Smart Contract Explorer</h2>
+            <div className="overflow-x-auto">
+                <table className="min-w-full">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="px-4 py-2 text-left">ID</th>
+                            <th className="px-4 py-2 text-left">Address/Contract</th>
+                            <th className="px-4 py-2 text-left">Amount</th>
+                            <th className="px-4 py-2 text-left">Currency</th>
+                            <th className="px-4 py-2 text-left">Blockchain</th>
+                            <th className="px-4 py-2 text-left">Timestamp</th>
+                            <th className="px-4 py-2 text-left">Risk Score</th>
+                            <th className="px-4 py-2 text-left">Status</th>
+                            <th className="px-4 py-2 text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map(tx => (
+                            <tr key={tx.id} className="border-b">
+                                <td className="px-4 py-2">{tx.id}</td>
+                                <td className="px-4 py-2">{tx.address}</td>
+                                <td className="px-4 py-2">{tx.amount}</td>
+                                <td className="px-4 py-2">{tx.currency}</td>
+                                <td className="px-4 py-2">{tx.blockchain}</td>
+                                <td className="px-4 py-2">{tx.timestamp}</td>
+                                <td className={`px-4 py-2 ${tx.riskScore > 80 ? 'text-red-600' : 'text-green-600'}`}>
+                                    {tx.riskScore}
+                                </td>
+                                <td className={`px-4 py-2 ${tx.status === 'Suspicious' ? 'text-red-600' : 'text-green-600'}`}>
+                                    {tx.status}
+                                </td>
+                                <td className="px-4 py-2">
+                                    <button
+                                        onClick={() => onSelectTransaction(tx)}
+                                        className="text-blue-600 hover:text-blue-800"
+                                    >
+                                        View Details
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+
+    // AI Risk Analytics Component
+    const AIRiskAnalytics = ({ analytics }) => (
+        <div className="bg-white p-4 rounded-lg border border-blue-100 mb-6">
+            <h2 className="text-xl font-bold mb-4">AI-Powered Risk Analytics</h2>
+            {analytics.length === 0 ? (
+                <p className="text-gray-600">No AI alerts at this time.</p>
+            ) : (
+                <ul className="space-y-2">
+                    {analytics.map(alert => (
+                        <li key={alert.id} className={`text-${alert.severity === 'High' ? 'red' : 'green'}-600`}>
+                            {alert.issue} (Transaction/Contract: {alert.transactionId}, Severity: {alert.severity})
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+
+    // Regulatory Reporting Component
+    const RegulatoryReporting = ({ transactions }) => {
+        const generateReport = async () => {
+            try {
+                const response = await axios.post('http://localhost:3000/api/generate-report', { transactions });
+                alert(`Compliance Report:\n${JSON.stringify(response.data, null, 2)}`);
+            } catch (error) {
+                console.error('Error generating report:', error);
+                alert('Failed to generate report.');
+            }
+        };
+
+        return (
+            <div className="bg-white p-4 rounded-lg border border-blue-100 mb-6">
+                <h2 className="text-xl font-bold mb-4">Regulatory Reporting</h2>
+                <button
+                    onClick={generateReport}
+                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                    Generate Compliance Report
+                </button>
+            </div>
+        );
+    };
+
+    // Cross-Chain Monitoring Component
+    const CrossChainMonitoring = ({ transactions }) => {
+        const blockchains = [...new Set(transactions.map(tx => tx.blockchain))];
+        return (
+            <div className="bg-white p-4 rounded-lg border border-blue-100 mb-6">
+                <h2 className="text-xl font-bold mb-4">Cross-Chain Monitoring</h2>
+                <ul className="space-y-2">
+                    {blockchains.map((chain, index) => (
+                        <li key={index} className="text-gray-600">
+                            {chain}: {transactions.filter(tx => tx.blockchain === chain).length} transactions/contracts
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        );
+    };
+
+    // Transaction/Smart Contract Details Modal
+    const TransactionDetails = ({ transaction, onClose }) => {
+        if (!transaction) return null;
+        return (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                    <h2 className="text-xl font-bold mb-4">{transaction.isSmartContract ? 'Smart Contract Details' : 'Transaction Details'}</h2>
+                    <div className="space-y-2">
+                        <p><strong>ID:</strong> {transaction.id}</p>
+                        <p><strong>Address/Contract:</strong> {transaction.address}</p>
+                        <p><strong>Amount:</strong> {transaction.amount} {transaction.currency}</p>
+                        <p><strong>Blockchain:</strong> {transaction.blockchain}</p>
+                        <p><strong>Timestamp:</strong> {transaction.timestamp}</p>
+                        <p><strong>Risk Score:</strong> {transaction.riskScore}</p>
+                        <p><strong>Status:</strong> {transaction.status}</p>
+                        {transaction.isSmartContract && (
+                            <>
+                                <p><strong>Function Calls:</strong> {transaction.functionCalls || 'None'}</p>
+                                <p><strong>Vulnerabilities:</strong> {transaction.vulnerabilities || 'None'}</p>
+                            </>
+                        )}
+                        <p><strong>eNaira:</strong> {transaction.isENaira ? 'Yes' : 'No'}</p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="mt-4 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        );
+    };
+
+    // Dashboard Stats Component
+    const DashboardStats = ({ stats }) => (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">Total Transactions</h3>
+                <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
+            </div>
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">Smart Contracts</h3>
+                <p className="text-3xl font-bold text-blue-600">{stats.smartContracts}</p>
+            </div>
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">High-Risk Alerts</h3>
+                <p className="text-3xl font-bold text-blue-600">{stats.highRisk}</p>
+            </div>
+            <div className="card bg-white p-4 rounded-lg border border-blue-100">
+                <h3 className="text-lg font-semibold text-gray-600">Compliance Rate</h3>
+                <p className="text-3xl font-bold text-blue-600">{stats.complianceRate}%</p>
+            </div>
+        </div>
+    );
+
+    // Chart Component for Transaction Volume
+    const TransactionChart = ({ transactions }) => {
+        const chartRef = useRef(null);
+        useEffect(() => {
+            const ctx = chartRef.current.getContext('2d');
+            const blockchains = [...new Set(transactions.map(tx => tx.blockchain))];
+            const data = blockchains.map(chain => ({
+                blockchain: chain,
+                count: transactions.filter(tx => tx.blockchain === chain).length
+            }));
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.blockchain),
+                    datasets: [{
+                        label: 'Transaction/Smart Contract Volume',
+                        data: data.map(d => d.count),
+                        backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            return () => chart.destroy();
+        }, [transactions]);
+
+        return (
+            <div className="card bg-white p-4 rounded-lg border border-blue-100 mb-6">
+                <h3 className="text-lg font-semibold mb-4">Transaction Volume by Chain</h3>
+                <canvas ref={chartRef}></canvas>
+            </div>
+        );
+    };
+
+    // Main Dashboard Component
+    const RegulatoryDashboard = () => {
+        const [transactions, setTransactions] = useState([]);
+        const [analytics, setAnalytics] = useState([]);
+        const [stats, setStats] = useState({ total: 0, smartContracts: 0, highRisk: 0, complianceRate: 100 });
+        const [selectedTransaction, setSelectedTransaction] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+        const [data, setData] = useState(null);
+
+useEffect(() => {
+    const fetchData = () => {
+        try {
+            const mockTransactions = [
+                {
+                    id: 'tx1',
+                    address: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                    amount: '1.5',
+                    currency: 'ETH',
+                    blockchain: 'Ethereum',
+                    timestamp: new Date().toISOString(), // Dynamic timestamp
+                    riskScore: 75,
+                    status: 'Compliant',
+                    isENaira: false,
+                    isSmartContract: false
+                },
+                {
+                    id: 'tx2',
+                    address: '0x1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t',
+                    amount: '25000',
+                    currency: 'eNGN',
+                    blockchain: 'eNaira DLT',
+                    timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+                    riskScore: 92,
+                    status: 'Suspicious',
+                    isENaira: true,
+                    isSmartContract: true,
+                    functionCalls: 'transfer, approve',
+                    vulnerabilities: 'Reentrancy'
+                },
+                {
+                    id: 'tx3',
+                    address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
+                    amount: '0.85',
+                    currency: 'BTC',
+                    blockchain: 'Bitcoin',
+                    timestamp: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
+                    riskScore: 45,
+                    status: 'Compliant',
+                    isENaira: false,
+                    isSmartContract: false
+                }
+            ];
+
+            const mockAnalytics = [
+                {
+                    id: 'alert1',
+                    issue: 'Possible money laundering pattern',
+                    transactionId: 'tx2',
+                    severity: 'High'
+                }
+            ];
+
+            // Calculate stats
+            const totalTransactions = mockTransactions.length;
+            const smartContracts = mockTransactions.filter(tx => tx.isSmartContract).length;
+            const highRisk = mockTransactions.filter(tx => tx.riskScore > 80).length;
+            const compliantTransactions = totalTransactions - highRisk;
+            const complianceRate = Math.round((compliantTransactions / totalTransactions) * 100);
+
+            setTransactions(mockTransactions);
+            setAnalytics(mockAnalytics);
+            setStats({
+                total: totalTransactions,
+                smartContracts,
+                highRisk,
+                complianceRate
+            });
+
+        } catch (error) {
+            console.error('Error loading mock data:', error);
+            // You might want to set some error state here
+        }
+    };
+
+    // Initial load
+    fetchData();
+
+    // Set up refresh interval (every 60 seconds)
+    const interval = setInterval(fetchData, 60000);
+
+    // Cleanup function
+    return () => {
+        clearInterval(interval);
+    };
+}, []); // Empty dependency array means this runs once on mount
+
+            if (loading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="p-4 bg-red-100 text-red-800 rounded-lg">
+                Error loading data: {error}
+            </div>
+        );
+    }
+
+     return (
+        <div>
+            <h3 className="text-xl font-semibold mb-4">On-Chain Activity Overview</h3>
+            
+            {data && (
+                <>
+                            <div>
+                <DashboardStats stats={stats} />
+                <TransactionChart transactions={transactions} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <CrossChainMonitoring transactions={transactions} />
+                    <AIRiskAnalytics analytics={analytics} />
+                </div>
+                <RegulatoryReporting transactions={transactions} />
+                <TransactionExplorer transactions={transactions} onSelectTransaction={setSelectedTransaction} />
+                <TransactionDetails transaction={selectedTransaction} onClose={() => setSelectedTransaction(null)} />
+            </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div className="card bg-white p-4 rounded-lg border border-gray-200">
+                            <h4 className="text-gray-600">Total Transactions</h4>
+                            <p className="text-2xl font-bold">{data.stats.total}</p>
+                        </div>
+                        <div className="card bg-white p-4 rounded-lg border border-gray-200">
+                            <h4 className="text-gray-600">Smart Contracts</h4>
+                            <p className="text-2xl font-bold">{data.stats.smartContracts}</p>
+                        </div>
+                        <div className="card bg-white p-4 rounded-lg border border-gray-200">
+                            <h4 className="text-gray-600">Compliance Rate</h4>
+                            <p className="text-2xl font-bold">{data.stats.complianceRate}%</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6">
+                        <h4 className="text-lg font-semibold mb-3">Recent Transactions</h4>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full">
+                                <thead>
+                                    <tr className="bg-gray-100">
+                                        <th className="px-4 py-2 text-left">ID</th>
+                                        <th className="px-4 py-2 text-left">Address</th>
+                                        <th className="px-4 py-2 text-left">Amount</th>
+                                        <th className="px-4 py-2 text-left">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {data.transactions.map(tx => (
+                                        <tr key={tx.id} className="border-b">
+                                            <td className="px-4 py-2">{tx.id}</td>
+                                            <td className="px-4 py-2">{tx.address.substring(0, 6)}...{tx.address.substring(tx.address.length - 4)}</td>
+                                            <td className="px-4 py-2">{tx.amount} {tx.currency}</td>
+                                            <td className={`px-4 py-2 ${
+                                                tx.status === 'Compliant' ? 'text-green-600' : 'text-red-600'
+                                            }`}>
+                                                {tx.status}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </>
+            )}
+        </div>
+    );
+};
+
+
+    // Initialize the dashboard when the tab is shown
+function initializeOnchainDashboard() {
+    // Double-check if root element exists and is visible
+    const rootElement = document.getElementById('onchainRoot');
+    if (!rootElement) {
+        console.error('onchainRoot element not found');
+        return;
+    }
+
+    // Check if React is properly loaded
+    if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
+        console.error('React is not loaded');
+        // Try again after a short delay
+        setTimeout(initializeOnchainDashboard, 100);
+        return;
+    }
+
+    // Add loading state
+    rootElement.innerHTML = '<div class="text-center py-8">Loading dashboard...</div>';
+
+    try {
+        // Render the dashboard with error boundary
+        ReactDOM.render(
+            <div className="p-4">
+                <RegulatoryDashboard />
+            </div>,
+            rootElement
+        );
+        console.log('On-chain dashboard rendered successfully');
+    } catch (error) {
+        console.error('Failed to render dashboard:', error);
+        rootElement.innerHTML = `
+            <div class="p-4 bg-red-100 text-red-800 rounded-lg">
+                Error loading dashboard. Please refresh the page.
+                <div class="text-sm mt-2">${error.message}</div>
+            </div>
+        `;
+    }
+}
+
+    // Tab switching function
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+        tab.classList.add('hidden');
+    });
+    
+    // Show selected tab
+    const tabElement = document.getElementById(tabName + 'Tab');
+    if (tabElement) {
+        tabElement.classList.remove('hidden');
+        tabElement.classList.add('active');
+    }
+    
+    // Special handling for onchain tab
+    if (tabName === 'onchain') {
+        initializeOnchainDashboard();
+    }
+}
+
+    // Initialize default tab when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        showTab('dashboard');
+    });
+</script>
 </head>
+
 <body class="font-sans bg-gray-100">
     <!-- Navigation Bar -->
 <nav class="bg-white shadow-md sticky top-0 z-50">
@@ -205,7 +736,7 @@
                     <span class="sidebar-text" data-translate="cbdcRemittance">CBDC Remittance</span>
                 </a></li>
                 <li><a href="#cbdc-tbills" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
-                    <i class="fas fa-exchange-alt""></i>
+                    <i class="fas fa-exchange-alt"></i>
                     <span class="sidebar-text" data-translate="cbdcTbills">Tokenized T-Bills</span>
                 </a></li>
                 <li><a href="#cbdc-fx" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded">
@@ -220,6 +751,12 @@
                     <i class="fas fa-shield-alt"></i>
                     <span class="sidebar-text" data-translate="dispute">Dispute Resolution</span>
                 </a></li>
+                <li>
+                    <a href="#onchain" class="flex items-center space-x-2 hover:bg-blue-700 p-2 rounded" onclick="showTab('onchain'); return false;">
+                        <i class="fas fa-link mr-2"></i>
+                        <span class="sidebar-text">On-Chain Ops</span>
+                    </a>
+                </li>
             </ul>
         </div>
             <!-- Main Content -->
@@ -417,6 +954,16 @@
         </div>
     </section>
 
+<!-- Add this with your other tab sections -->
+<section id="onchainTab" class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-blue-800 mb-6">Regulatory Dashboard for On-Chain Operations</h2>
+            <div id="onchainRoot"></div>
+        </div>
+    </div>
+</section>
+
     <!-- Compliance & Governance -->
     <section id="compliance" class="py-16">
         <div class="container mx-auto px-4">
@@ -458,7 +1005,10 @@
         </div>
     </section>
 
-    <!-- Commodity Reserves -->
+
+
+
+ 
     <section id="reserves" class="py-16 bg-gray-200">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12" data-translate="reservesTitle">Commodity Reserve Structure</h2>
